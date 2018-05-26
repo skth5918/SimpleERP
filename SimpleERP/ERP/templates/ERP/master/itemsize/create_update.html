@@ -1,0 +1,127 @@
+{% load rest_framework %}
+{% load common_function %}
+
+<!DOCTYPE html>
+<html lang="en">    
+
+{% include "ERP/includes/header.html" %}
+    <body>
+        <!-- Aside Start-->
+        {% include "ERP/includes/left_menu.html" %}
+        <!-- Aside Ends-->
+        <!--Main Content Start -->
+        <section class="content">
+            <!-- Header -->
+           {% include "ERP/includes/top_menu.html" %}
+            <!-- Header Ends -->
+            <!-- Page Content Start -->
+            <div class="wraper container-fluid">
+              
+               
+               <form  method="post" name="frm" id="frm">   
+                 {% csrf_token %}
+                <div class="page-title"> 
+                    <div class="col-md-6 ">
+                        <h3 class="title"> {{ module }}</h3> 
+                    </div>
+                    <div class="col-md-6 text-right">
+                     <a href="{% url 'ERP:itemsize_list' %}">  <i class="fa fa-eye fa-2x text-inverse"></i> </a>
+                    </div>
+                        
+                  </div>
+                 
+                 <div class="row">
+                                
+                                {% if  error_data  or  success_data%}
+                                
+                                 <div class="col-md-12">
+                                    <div   {% if  error_data  %} class="alert alert-danger"  {% endif %} {% if  success_data  %} class="alert  alert-success"  {% endif %}>
+                                    {% if  error_data  %}
+                                        {{error_data.Error.message}} 
+                                    
+                                         {% for  error_details in error_data.Error.error_details %}
+                                                {{error_data..Error.error_details}}
+                                                </Br>
+                                                {{error_details.field}} -> {{error_details.message}}
+                                          {% endfor %}
+                                 
+                                    {% endif %}
+                                    {% if  success_data %}
+                                        <strong>Well done!</strong> {{success_data}}.
+                                    {% endif %}
+                                    </div>
+                                </div>
+                               {% endif %}
+                   </div>
+                <div class="row">
+                        <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">{{ module }} </h3>
+ </div>
+                            <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="Name">Item Size</label>
+                                        <input type="text" class="form-control" id="name" name="name" value="{{data.name}}" placeholder="Enter Item Size Name">
+                                    </div>
+                                 
+
+                                                                    
+                                    
+                                    <!-- panel-body -->
+                        </div> <!-- panel -->
+
+                    </div>
+
+
+ </div>
+
+
+                    
+
+                <div class="row">
+
+                    <!-- Basic example -->
+                    <div class="col-md-12 text-right"  {% if view_mode %} style="display:none" {% endif%}>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                    <button type="submit" class="btn btn-success submit_btn" id="submit_frm" >Submit</button>
+                                    <button type="reset" class="btn btn-default reset_btn">Reset</button>
+                            </div><!-- panel-body -->
+                        </div> <!-- panel -->
+                    </div>
+                <!-- End row -->
+                 </form>
+                <!-- Form-validation -->
+              
+                
+            </div>
+            <!-- Page Content Ends -->
+            <!-- Footer Start -->
+            {% include "ERP/includes/footer.html" %}
+            <!-- Footer Ends -->
+        </section>
+        <!-- Main Content Ends -->
+    
+ {% include "ERP/includes/js_script.html" %}
+        <!-- js placed at the end of the document so the pages load faster -->
+    </body>
+</html>
+<script>
+$(document).ready(function() {
+    $("#submit_frm").click(function(){
+        FrmValidation();
+        //alert("RE:");
+    }); 
+    
+});
+function FrmValidation(){
+    $("#frm").validate({
+        rules : {
+            unit_name : {
+                required : true,
+            },
+           
+        }
+    });
+}
+ </script>

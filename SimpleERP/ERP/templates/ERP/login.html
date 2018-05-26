@@ -1,0 +1,73 @@
+{% load rest_framework %}
+{% load common_function %}
+<!DOCTYPE html>
+<html lang="en">
+    
+<!-- Mirrored from coderthemes.com/velonic_3.0/admin_4/form-validation.html by HTTrack Website Copier/3.x [XR&CO'2013], Sat, 12 Nov 2016 20:52:49 GMT -->
+{% include "ERP/includes/header.html" %}
+
+
+    <body>
+        <!--Main Content Start -->
+        <!-- Page Content Start -->
+       <div class="wrapper-page animated fadeInDown">
+            <div class="panel col-lg-12 panel-color panel-primary">
+                <div class="panel-heading" style="margin-top: 10px;"> 
+                   <h3 class="text-center m-t-10"> Sign In to <strong>{% application_name as appname  %} {{ appname }}</strong> </h3>
+                </div> 
+
+                <form class="form-horizontal m-t-40" method="POST" action="#">
+                    {% csrf_token %}        
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input class="form-control" type="text" placeholder="Username" name='username', id='username'>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        
+                        <div class="col-xs-12">
+                            <input class="form-control" type="password" placeholder="Password" name='password' id='password'>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <label class="cr-styled">
+                                <input type="checkbox" checked>
+                                <i class="fa"></i> 
+                                Remember me
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group text-right">
+                        <div class="col-xs-12">
+                            <button class="btn btn-purple w-md" type="submit">Log In</button>
+                        </div>
+                    </div>
+                    <div class="form-group m-t-30">
+                        <div class="col-sm-7">
+                            <a href="recoverpw.html"><i class="fa fa-lock m-r-5"></i> Forgot your password?</a>
+                        </div>
+                        <div class="col-sm-5 text-right">
+                            <a href="register.html">Create an account</a>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+            
+            </div>
+            <!-- Page Content Ends -->
+            <!-- ================== -->
+
+ {% include "ERP/includes/js_script.html" %}
+        <!-- js placed at the end of the document so the pages load faster -->
+      
+
+
+    </body>
+
+<!-- Mirrored from coderthemes.com/velonic_3.0/admin_4/form-validation.html by HTTrack Website Copier/3.x [XR&CO'2013], Sat, 12 Nov 2016 20:52:50 GMT -->
+</html>

@@ -1,0 +1,132 @@
+{% load rest_framework %}
+{% load common_function %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "ERP/includes/header.html" %}
+    <body>
+        {% include "ERP/includes/left_menu.html" %}
+        <section class="content">
+           {% include "ERP/includes/top_menu.html" %}
+            <div class="wraper container-fluid">
+
+
+               <form  method="post" name="frm" id="frm">
+                 {% csrf_token %}
+                <div class="page-title">
+                    <div class="col-md-6 ">
+                        <h3 class="title"> {{ module }}</h3>
+                    </div>
+                    <div class="col-md-6 text-right">
+                     <a href="{% url 'ERP:list_project' %}">  <i class="fa fa-eye fa-2x text-inverse"></i> </a>
+                    </div>
+
+                  </div>
+
+                 <div class="row">
+
+                                {% if  error_data  or  success_data%}
+
+                                 <div class="col-md-12">
+                                    <div   {% if  error_data  %} class="alert alert-danger"  {% endif %} {% if  success_data  %} class="alert  alert-success"  {% endif %}>
+                                    {% if  error_data  %}
+                                        {{error_data.Error.message}}
+
+                                         {% for  error_details in error_data.Error.error_details %}
+                                                {{error_data..Error.error_details}}
+                                                </Br>
+                                                {{error_details.field}} -> {{error_details.message}}
+                                          {% endfor %}
+
+                                    {% endif %}
+                                    {% if  success_data %}
+                                        <strong>Well done!</strong> {{success_data}}.
+                                    {% endif %}
+                                    </div>
+                                </div>
+                               {% endif %}
+                   </div>
+                <div class="row">
+                        <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">{{ module }} </h3>
+ </div>
+                            <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="project_name">Project Name</label>
+                                        <input type="text" class="form-control" id="project_name" name="project_name" value="{{data.project_name}}" placeholder="Enter Project Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="project_est_amt">Estimated Amount</label>
+                                        <input type="number" class="form-control" id="project_est_amt" name="project_est_amt" value="{{data.project_est_amt}}" placeholder="Enter Estimated Amount">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="start_date">Start Date</label>
+                                        <input type="date" class="form-control" id="start_date" name="start_date" value="{{data.start_date}}" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="end_date">End Date</label>
+                                        <input type="date" class="form-control" id="end_date" name="end_date" value="{{data.end_date}}" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="project_net_amt">Project Net Amount</label>
+                                        <input type="number" class="form-control" id="project_net_amt" name="project_net_amt" value="{{data.project_net_amt}}" placeholder="Enter Net Amount">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="status">Status</label>
+                                        <input type="text" class="form-control" id="status" name="status" value="{{data.status}}" placeholder="Enter Status">
+                                    </div>
+                        </div>
+
+                    </div>
+
+
+ </div>
+
+
+
+
+                <div class="row">
+
+                    <!-- Basic example -->
+                    <div class="col-md-12 text-right"  {% if view_mode %} style="display:none" {% endif%}>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                    <button type="submit" class="btn btn-success submit_btn" id="submit_frm" >Submit</button>
+                                    <button type="reset" class="btn btn-default reset_btn">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                 </form>
+
+
+            </div>
+            {% include "ERP/includes/footer.html" %}
+        </section>
+
+ {% include "ERP/includes/js_script.html" %}
+    </body>
+</html>
+<script>
+$(document).ready(function() {
+    $("#submit_frm").click(function(){
+        FrmValidation();
+        //alert("RE:");
+    });
+
+});
+function FrmValidation(){
+    $("#frm").validate({
+        rules : {
+            project_name : {
+                required : true,
+            },
+            project_est_name : {
+                required : true,
+            },
+
+        }
+    });
+}
+ </script>

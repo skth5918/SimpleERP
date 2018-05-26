@@ -1,0 +1,484 @@
+{% load rest_framework %}
+{% load common_function %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<style>
+hr { 
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 1px;
+} 
+</style>
+{% include "ERP/includes/header.html" %}
+<body>
+	<!-- Aside Start-->
+	{% include "ERP/includes/left_menu.html" %}
+	<!-- Aside Ends-->
+	<!--Main Content Start -->
+	<section class="content">
+		<!-- Header -->
+		{% include "ERP/includes/top_menu.html" %}
+		<!-- Header Ends -->
+		<!-- Page Content Start -->
+		<div class="wraper container-fluid">
+
+
+			<form method="post" name="frm" id="frm">
+				{% csrf_token %}
+				<div class="page-title">
+					<div class="col-md-6 ">
+						<h3 class="title">{{ module }}</h3>
+					</div>
+					<div class="col-md-6 text-right">
+						<a href="{% url 'ERP:purchase_list' %}"> <i
+							class="fa fa-eye fa-2x text-inverse"></i>
+						</a>
+					</div>
+
+				</div>
+
+				<div class="row">
+
+					{% if error_data or success_data%}
+
+					<div class="col-md-12">
+						<div {% if error_data  %} class="alert alert-danger"
+							{% endif %} {% if success_data  %} class="alert  alert-success"{% endif %}>
+							{% if error_data %} {{error_data.Error.message}} 
+							{% for error_details in error_data.Error.error_details %}
+							{{error_data..Error.error_details}} </Br> {{error_details.field}} ->
+							{{error_details.message}} {% endfor %} {% endif %} {% if
+							success_data %} <strong>Well done!</strong> {{success_data}}. {%
+							endif %}
+						</div>
+					</div>
+					{% endif %}
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">{{ module }}</h3>
+							</div>
+							<div class="panel-body">
+							<div class="col-md-12">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="entry_date">Entry Date</label> <input type="text"
+											class="form-control" id="entry_date" name="entry_date"
+											value='{{data.entry_date |date:"d-m-Y" }}' placeholder="Date">
+									</div>
+								
+								<div class="form-group">
+										<label for="name">Supplier Name</label> <input type="text"
+											class="form-control" id="supplier_name" name=supplier_name
+											value="{{data.supplier.name}}" placeholder="Enter  Item Code">
+											<input type="hidden"
+											class="form-control" id="supplier" name="supplier">
+									</div>
+                                    <div class="form-group">
+										<label for="entry_date">Supplier Bill No</label> <input type="text"
+											class="form-control" id="supplier_bill_no" name="supplier_bill_no"
+											value='{{data.supplier_bill_no }}' placeholder="Bill No">
+									</div>
+									
+								</div>
+								<div class="col-md-6">
+								<div class="form-group">
+                                       {% drop_down_list tableName="ERP_warehouse" show_field_name="warehouse_name" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="warehouse_from">Warehouse</label>
+                                        <select class="form-control" id="warehouse" name="warehouse">
+                                            <option value="">-- Select Warehouse -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}" 
+                                                {% if list_dorp_val.id == data.warehouse_id %}
+    selected="true" 
+    {% endif%} 
+
+                                                > {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div> 
+									
+									<div class="form-group">
+										<label for="description">Description</label><textarea class="form-control" id="description" name="description">{{data.description}}</textarea>
+									</div>
+									<div class="form-group">
+										<label for="bill_mode">Bill Mode</label> 
+										<select class="form-control" id="bill_mode" name="bill_mode">
+                                           
+                                                <option value="1"> With Tax</option>
+                                          		<option value="2"> With Out Tax</option>
+                                          
+                                        </select>
+										
+
+</div>
+								</div>
+</div>
+<div class="col-md-12"><hr></div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="name">Item Name</label> <input type="text"
+											class="form-control" id="item_name" name=item_name
+											value="{{data.name}}" placeholder="Enter  Item Code">
+											<input type="hidden"
+											class="form-control" id="item" name="item">
+									</div>
+									<div class="form-group">
+										<label for="qty">Qty</label> <input type="text"
+											class="form-control" id="qty" name="qty"
+											value="{{data.name}}" placeholder="Enter Qty">
+									</div>
+									<div class="form-group">
+										<label for="serial_nos">Serial Nos</label> 
+										<textarea class="form-control" id="serial_nos" name="serial_nos">
+										
+										</textarea>
+											
+											
+									</div><div class="form-group">
+										<label for="batch_no">Batch No</label> <input type="text"
+											class="form-control" id="batchno" name="batchno"
+											value="{{data.name}}" placeholder="Enter Batch No">
+									<input type="text" name="purchaseinvoice_id" id="purchaseinvoice_id" style="display:none;" value={{data.id}}>
+									{% if data.id %}	
+									<input type="text" name="action" id="action" style="display:none;" value="2">
+									{% else %}
+									<input type="text" name="action" id="action" style="display:none;" value="1">
+									{% endif %}	
+									</div>
+									
+									</div>
+									<div class="col-md-6"><div class="form-group">
+										<label for="rate">Rate</label> <input type="text"
+											class="form-control" id="rate" name="rate"
+											value="{{data.rate}}" placeholder="Enter Rate">
+									</div>
+									<div class="form-group">
+										<label for="amount">Amount</label> <input type="text"
+											class="form-control" id="bill_amount" name="bill_amount"
+											value="{{data.name}}" placeholder="Enter Amount">
+									</div>
+									<div class="form-group">
+										<label for="discount">Discount</label> <input type="text"
+											class="form-control" id="discount" name="discount"
+											value="{{data.name}}" placeholder="Enter Discount Amount">
+									</div>
+									<div class="form-group">
+                                       {% drop_down_list tableName="ERP_taxgroup" show_field_name="name" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="selling_tax_group">Tax Group</label>
+                                        <select class="form-control" id="taxgroup_id" name="taxgroup_id">
+                                            <option value="">--  Tax Group -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}" 
+                                                > {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                        <input type="hidden"
+											class="form-control" id="tax_per" name="tax_per"
+											value="" placeholder="Enter Qty">
+                                    </div>
+                                    <div class="form-group">
+										<label for="qty">Tax Amount</label> <input type="text"
+											class="form-control" id="tax_amount" name="tax_amount"
+											value="{{data.name}}" placeholder="Enter Qty">
+									</div>
+									<div class="form-group">
+										<label for="qty">Net Amount</label> <input type="text"
+											class="form-control" id="net_amount" name="net_amount"
+											value="{{data.name}}" placeholder="Enter Qty">
+									</div>
+									
+									{% if  data.status is not 1 %}
+									<div class="form-group {% if view_mode %} style="display: none"{% endif %}">
+										<button type="submit" class="btn btn-info submit_btn"
+											id="add_stock">Add</button>
+										<button type="reset" class="btn btn-default reset_btn">Reset</button>
+									</div>
+									{% endif %}
+								</div>
+								<div class="col-md-12"><hr></div>
+								
+								<div class="col-md-12" id="items_div"></div>
+								
+								<!-- panel-body -->
+							</div>
+							<!-- panel -->
+
+						</div>
+
+
+					</div>
+
+
+
+
+					<div class="row">
+
+						<!-- Basic example -->
+						<div class="col-md-12 text-right" {% if view_mode %} style="display: none"{% endif %}>
+							<div class="panel panel-default">
+							
+							{% if  data.status is not 1 %}
+								<div class="panel-body">
+									<button type="submit" class="btn btn-success submit_btn"
+										id="submit_frm">Submit</button>
+									<button type="reset" class="btn btn-default reset_btn">Reset</button>
+								</div>
+							
+							{% endif %}
+								<!-- panel-body -->
+							</div>
+							<!-- panel -->
+						</div>
+						<!-- End row -->
+			</form>
+			<!-- Form-validation -->
+
+
+		</div>
+		<!-- Page Content Ends -->
+		<!-- Footer Start -->
+		{% include "ERP/includes/footer.html" %}
+		<!-- Footer Ends -->
+	</section>
+	<!-- Main Content Ends -->
+
+	{% include "ERP/includes/js_script.html" %}
+	{% include "ERP/includes/autocomplete.html" %}
+	<!-- js placed at the end of the document so the pages load faster -->
+</body>
+</html>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script> -->
+<!-- jQuery UI !-->
+
+<script>
+	
+	$(document).ready(function() {
+		$("#submit_frm").click(function() {
+			var x = confirm("Are you sure you want to Submit this entry?");
+			if (x) {
+				return true;
+			} else {
+
+				return false;
+			}
+		});
+		$('#entry_date').datepicker({
+
+			dateFormat : 'dd-mm-yy'
+
+		});
+		purchaseinvoice_id = $("#purchaseinvoice_id").val();
+		// alert(stockentry_id)
+
+		//alert(stockentry_id);
+		items(purchaseinvoice_id);
+
+	});
+	$("#add_stock").click(function() {
+
+		FrmValidation();
+		form = $("#frm")
+		$("#add_stock").hide();
+		$.ajax({
+			url : "../items_create/",
+			data : form.serialize(),
+			type : "Post",
+			success : function(data) {
+
+				id = data.purchaseinvoice_id;
+				//alert(data);
+				$("#purchaseinvoice_id").val(id);
+				items(id)
+				//clear_data();
+				$("#add_stock").show();
+			},
+			error : function(textStatus, errorThrown) {
+				Success = false;//doesnt goes here
+				$("#add_stock").show()
+			}
+		});
+		return false;
+
+	});
+
+	$("#qty,#discount").keyup(function() {
+		
+		rate = $("#rate").val();
+		qty=$("#qty").val();
+		amount=parseFloat(rate)*parseFloat(qty)
+		$("#bill_amount").val(amount);
+		discount=$("#discount").val();
+		if(!discount)
+		{
+			discount=0;
+		}
+		bill_mode=$("#bill_mode").val();
+		if(bill_mode==1)
+			{
+			
+			amount_ad=parseFloat(amount)-parseFloat(discount);
+			tax_per=$("#tax_per").val();
+			tax_amount=parseFloat(amount_ad)*parseFloat(tax_per/100);
+			
+			net_amount=parseFloat(tax_amount)+parseFloat(amount_ad);
+			tax_amount=tax_amount.toFixed(2)
+			net_amount=net_amount.toFixed(2)
+			$("#net_amount").val(net_amount);
+			$("#tax_amount").val(tax_amount);
+			//alert(tax_amount);
+			}
+	
+		if(bill_mode==2)
+		{
+			
+			//alert("DSFD");
+		amount_ad=parseFloat(amount)-parseFloat(discount);
+		tax_per=$("#tax_per").val();
+		tax_amount=0;
+		net_amount=parseFloat(tax_amount)+parseFloat(amount_ad);
+		tax_amount=tax_amount.toFixed(2)
+		net_amount=net_amount.toFixed(2)
+		$("#net_amount").val(net_amount);
+		$("#tax_amount").val(tax_amount);
+		}
+	});
+	
+	function FrmValidation() {
+		
+		$("#frm").validate({
+			rules : {
+				entry_date : {
+					required : true,
+				},
+				supplier_name : {
+					required : true,
+				},
+				warehouse : {
+					required : true,
+				},
+				item_name : {
+					required : true,
+				},
+				qty : {
+					required : true,
+				      number: true
+				},
+				
+			},
+			
+
+		});
+
+		//return false;
+
+	}
+	$(function() {
+		$("#item_name").autocomplete({
+			source : "/erp/autocompletes/item_list_autocomplete/",
+			select : function(event, ui) { //item selected
+				var selectedObj = ui.item;
+				$("#item").val(selectedObj.id);
+				//alert(selectedObj.tax_per);
+				//alert(selectedObj.tax_group);
+				$("#taxgroup_id").val(selectedObj.tax_group);
+
+;
+				$("#tax_per").val(selectedObj.tax_per);
+				$("#rate").val(selectedObj.buying_price);
+				$("#qty").val(0);
+
+			},
+			minLength : 2,
+
+		});
+	});
+
+	$(function() {
+		$("#supplier_name").autocomplete({
+			source : "/erp/autocompletes/supplier_list_autocomplete/",
+			select : function(event, ui) { //item selected
+				// AutoCompleteSelectHandler(event, ui)
+				var selectedObj = ui.item;
+				$("#supplier").val(selectedObj.id);
+
+			},
+			minLength : 2,
+		});
+	});
+
+	function clear_data() {
+		$("#item_name").val("");
+		$("#item").val("");
+		$("#qty").val("");
+		$("#serial_nos").val("");
+		$("#batcch_no").val("");
+	}
+	function items(id) {
+		if($("#action").val()==2)
+			{
+			url="../../purchase_items";
+			}
+		else
+			{
+			url="../purchase_items";
+			}
+		$.ajax({
+			url : url,
+			data : {
+				"id" : id
+			},
+			contentType : 'application/json',
+
+			success : function(data) {
+				$("#items_div").html(data);
+
+			},
+			
+		})
+	}
+	function items_delete(id) {
+		if($("#action").val()==2)
+		{
+		url="../../purchaseitems_delete";
+		}
+	else
+		{
+		url="../purchaseitems_delete";
+		}
+		var x = confirm("Are you sure you want to delete?");
+		if (x) {
+			$.ajax({
+				url : url,
+				data : {
+					"id" : id
+				},
+				contentType : 'application/json',
+
+				success : function(data) {
+					id = $("#purchaseinvoice_id").val();
+
+					if (id) {
+						//alert(stockentry_id);
+						items(id);
+					}
+
+				},
+			})
+		} else {
+			return false;
+		}
+	}
+
+</script>

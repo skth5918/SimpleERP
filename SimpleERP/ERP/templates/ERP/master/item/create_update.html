@@ -1,0 +1,469 @@
+{% load rest_framework %}
+{% load common_function %}
+
+<!DOCTYPE html>
+<html lang="en">    
+
+{% include "ERP/includes/header.html" %}
+    <body>
+        <!-- Aside Start-->
+        {% include "ERP/includes/left_menu.html" %}
+        <!-- Aside Ends-->
+        <!--Main Content Start -->
+        <section class="content">
+            <!-- Header -->
+           {% include "ERP/includes/top_menu.html" %}
+            <!-- Header Ends -->
+            <!-- Page Content Start -->
+            <div class="wraper container-fluid">
+              
+               
+               <form  method="post" name="frm" id="frm">   
+                 {% csrf_token %}
+                <div class="page-title"> 
+                    <div class="col-md-6 ">
+                        <h3 class="title"> {{ module }}</h3> 
+                    </div>
+                    <div class="col-md-6 text-right">
+                     <a href="{% url 'ERP:item_list' %}">  <i class="fa fa-eye fa-2x text-inverse"></i> </a>
+                    </div>
+                        
+                  </div>
+                 
+                 <div class="row">
+                                
+                                {% if  error_data  or  success_data%}
+                                
+                                 <div class="col-md-12">
+                                    <div   {% if  error_data  %} class="alert alert-danger"  {% endif %} {% if  success_data  %} class="alert  alert-success"  {% endif %}>
+                                    {% if  error_data  %}
+                                        {{error_data.Error.message}} 
+                                    
+                                         {% for  error_details in error_data.Error.error_details %}
+                                                {{error_data..Error.error_details}}
+                                                </Br>
+                                                {{error_details.field}} -> {{error_details.message}}
+                                          {% endfor %}
+                                 
+                                    {% endif %}
+                                    {% if  success_data %}
+                                        <strong>Well done!</strong> {{success_data}}.
+                                    {% endif %}
+                                    </div>
+                                </div>
+                               {% endif %}
+                   </div>
+                <div class="row">
+                        <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">{{ module }} Information</h3>
+ </div>
+                            <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" id="name" name="name" value="{{data.name}}" placeholder="Enter Item Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="item_code">Item Code</label>
+                                        <input type="text" class="form-control" id="item_code" name="item_code" placeholder="Enter  Item Code" value="{{data.item_code}}" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hsn_code">HSN Code</label>
+                                        <input type="text" class="form-control" id="hsn_code" name="hsn_code" placeholder="Enter HSN Code" value="{{data.hsn_code}}" >
+                                    </div>
+
+                                    <div class="form-group">
+                                       {% drop_down_list tableName="ERP_itemgroup" show_field_name="name" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="group">Group</label>
+                                        <select class="form-control" id="group" name="group">
+                                            <option value="">-- Select Group -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}" 
+                                                {% if list_dorp_val.id == data.group %}
+    selected="true" 
+    {% endif%} 
+
+                                                > {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>  
+
+<div class="form-group">
+                                       {% drop_down_list tableName="ERP_itembrand" show_field_name="name" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="brand_id">Brand</label>
+                                        <select class="form-control" id="brand" name="brand">
+                                            <option value="">-- Select Brand -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}" 
+                                                
+                                                {% if list_dorp_val.id == data.brand %}
+    selected="true" 
+    {% endif%} 
+
+                                                > {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>   
+
+
+
+                                    <div class="form-group">
+                                       {% drop_down_list tableName="ERP_itemcolor" show_field_name="name" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="color_id">Color</label>
+                                        <select class="form-control" id="color" name="color">
+                                            <option value="">-- Select Color -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}" 
+                                                {% if list_dorp_val.id == data.color %}
+    selected="true" 
+    {% endif%} 
+
+                                                > {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>   
+
+
+                                        <div class="form-group">
+                                       {% drop_down_list tableName="ERP_itemsize" show_field_name="name" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="size_id">Size</label>
+                                        <select class="form-control" id="size" name="size">
+                                            <option value="">-- Select Size -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}" 
+                                                {% if list_dorp_val.id == data.size %}
+    selected="true" 
+    {% endif%} 
+
+                                                > {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>   
+
+
+
+
+
+                                                     
+                                                                      
+                                    
+                            </div><!-- panel-body -->
+                        </div> <!-- panel -->
+
+                    </div>
+
+
+
+
+
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">Item Information</h3></div>
+                            <div class="panel-body">
+                                   <div class="form-group">
+                                        <label class="col-md-12 control-label">Serial No:</label>
+                                        <div class="col-md-12">
+                                            <div class="radio-inline">
+                                                <label class="cr-styled" for="serial1">
+                                                    <input type="radio" id="serial1" name="serial" value="1" {% if data.is_default %}
+    checked="true" 
+    {% endif%} > 
+                                                    <i class="fa"></i>
+                                                    Yes 
+                                                </label>
+                                            </div>
+                                            <div class="radio-inline">
+                                                <label class="cr-styled" for="serial2">
+                                                    <input type="radio" id="serial2" name="serial" value="0" {% if not data.is_default %}
+    checked="true" 
+    {% endif%} > 
+                                                    <i class="fa"></i> 
+                                                    No
+                                                </label>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>   
+
+                                    <div class="form-group serial_prefix_div"> 
+                                        <label for="prefix_serial_no" class="control-label">Prefix-Serial No</label>
+                                        <input type="text" class="form-control" id="serial_prefix" name="serial_prefix" placeholder="Enter Serial Prefix" value="{{data.serila_prefix}}">
+                                    </div
+                                    
+                                    <div class="form-group">
+                                        <label class="col-md-12 control-label">Batch  No:</label>
+                                        <div class="col-md-12">
+                                            <div class="radio-inline">
+                                                <label class="cr-styled" for="batch1">
+                                                    <input type="radio" id="batch1" name="batch" value="1" {% if data.is_default %}
+    checked="true" 
+    {% endif%} > 
+                                                    <i class="fa"></i>
+                                                    Yes 
+                                                </label>
+                                            </div>
+                                            <div class="radio-inline">
+                                                <label class="cr-styled" for="batch2">
+                                                    <input type="radio" id="batch2" name="batch" value="0" {% if not data.is_default %}
+    checked="true" 
+    {% endif%} > 
+                                                    <i class="fa"></i> 
+                                                    No
+                                                </label>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>   
+                                              
+                                    <div class="form-group">
+                                       {% drop_down_list tableName="ERP_unit" show_field_name="unit_name" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="default_currency">Purchase Unit</label>
+                                        <select class="form-control" id="purchase_unit" name="purchase_unit">
+                                            <option value="">-- Select Purchase Unit -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}" 
+                                                {% if list_dorp_val.id == data.purchase_unit %}
+    selected="true" 
+    {% endif%} 
+
+                                                > {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>  
+                                     <div class="form-group">
+                                       {% drop_down_list tableName="ERP_unit" show_field_name="unit_name" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="default_currency">Sales Unit</label>
+                                        <select class="form-control" id="sales_unit" name="sales_unit">
+                                            <option value="">-- Select Sales Unit -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}" 
+                                                {% if list_dorp_val.id == data.sales_unit %}
+    selected="true" 
+    {% endif%} 
+
+                                                > {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>  
+                                    <div class="form-group">
+                                        <label for="account_no">Conversion Qty</label>
+                                        <input type="text" class="form-control" id="convertion_qty"  value="{{data.convertion_qty}}" name="convertion_qty" placeholder="Enter Converion Qty">
+                                    </div>
+                                   <div class="form-group">
+                                        <label class="col-md-12 control-label">Maintain Stock:</label>
+                                        <div class="col-md-12">
+                                            <div class="radio-inline">
+                                                <label class="cr-styled" for="maintain_stock1">
+                                                    <input type="radio" id="maintain_stock1" name="maintain_stock" value="1" {% if data.is_default %}
+    checked="true" 
+    {% endif%} > 
+                                                    <i class="fa"></i>
+                                                    Yes 
+                                                </label>
+                                            </div>
+                                            <div class="radio-inline">
+                                                <label class="cr-styled" for="maintain_stock2">
+                                                    <input type="radio" id="maintain_stock2" name="maintain_stock" value="0" {% if not data.is_default %}
+    checked="true" 
+    {% endif%} > 
+                                                    <i class="fa"></i> 
+                                                    No
+                                                </label>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div> 
+                                     <div class="form-group">
+                                       {% drop_down_list tableName="ERP_taxgroup" show_field_name="name" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="default_currency">Tax Group</label>
+                                        <select class="form-control" id="tax_group" name="tax_group">
+                                            <option value="">-- Select Tax Group -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}" 
+                                                {% if list_dorp_val.id == data.tax_group %}
+    selected="true" 
+    {% endif%} 
+
+                                                > {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>  
+                                  </div>                              
+                            </div><!--</D </div><panel-body -->
+                        </div> <!-- panel -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">{{ module }} Variants</h3></div>
+                            <div class="panel-body">
+                                     <div class="form-group">
+                                        <label class="col-md-12 control-label">Has Variants:</label>
+                                        <div class="col-md-12">
+                                            <div class="radio-inline">
+                                                <label class="cr-styled" for="variants1">
+                                                    <input type="radio" id="variants1" name="variants" value="1" {% if data.is_default %}
+    checked="true" 
+    {% endif%} > 
+                                                    <i class="fa"></i>
+                                                    Yes 
+                                                </label>
+                                            </div>
+                                            <div class="radio-inline">
+                                                <label class="cr-styled" for="variants2">
+                                                    <input type="radio" id="variants2" name="variants" value="0" {% if not data.is_default %}
+    checked="true" 
+    {% endif%} > 
+                                                    <i class="fa"></i> 
+                                                    No
+                                                </label>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div> 
+                                    <div class="variants_div">
+                                    <div class="form-group">
+                                        <label for="item_code">Variants Name</label>
+                                        <input type="text" class="form-control" id="variant_name1" name="variant_name[]" placeholder="Enter Variant Name" value="{{data.item_code}}" >
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        
+                                        <input type="text" class="form-control" id="variant_name2" name="variant_name[]" placeholder="Enter Variant Name" value="{{data.item_code}}" >
+                                    </div>
+                                   </div>   
+                                    <div class="form-group variants_div_plus">
+                                        <a href="javascript:void(0)"><label for="variant_plus" id="variant_plus">+</label></a>
+                                    </div>
+                            </div>
+                        </div>
+                         </div> 
+                   </div>
+
+
+                <div class="row">
+
+                    <!-- Basic example -->
+                    <div class="col-md-12 text-right"  {% if view_mode %} style="display:none" {% endif%}>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                    <button type="submit" class="btn btn-success submit_btn" id="submit_frm" >Submit</button>
+                                    <button type="reset" class="btn btn-default reset_btn">Reset</button>
+                            </div><!-- panel-body -->
+                        </div> <!-- panel -->
+                    </div>
+                <!-- End row -->
+                 </form>
+                <!-- Form-validation -->
+              
+                
+            </div>
+            <!-- Page Content Ends -->
+            <!-- Footer Start -->
+            {% include "ERP/includes/footer.html" %}
+            <!-- Footer Ends -->
+        </section>
+        <!-- Main Content Ends -->
+    
+ {% include "ERP/includes/js_script.html" %}
+        <!-- js placed at the end of the document so the pages load faster -->
+    </body>
+</html>
+<script>
+$(document).ready(function() {
+    $("#submit_frm").click(function(){
+        FrmValidate();
+        //alert("RE:");
+    }); 
+    $('input[type=radio][name=variants]').change(function() {
+    	
+        if (this.value == '1') {
+            $(".variants_div").show();
+            $(".variants_div_plus").show();
+        }
+        else if (this.value == '0') {
+        	$(".variants_div").hide();
+            $(".variants_div_plus").hide();
+        }
+    });
+ $('input[type=radio][name=serial]').change(function() {
+    	//alert("TEst");
+        if (this.value == '1') {
+            $(".serial_prefix_div").show();
+            
+        }
+        else if (this.value == '0') {
+        	$(".serial_prefix_div").hide();
+           
+        }
+    });
+});
+variant_plus_cout=2;
+$("#variant_plus").click(function(){
+		  variant_plus_cout++;
+          vari_div='<div class="form-group" > <input type="text" class="form-control" id="variant_name'+variant_plus_cout+'" name="variant_name[]" placeholder="Enter Variant Name"  ></div>';
+    	  $(".variants_div").append(vari_div);
+    	  
+    	  
+    	 // alert(vari_div);
+    }); 
+   
+function FrmValidate(){
+    $("#frm").validate({
+        rules : {
+            name : {
+                required : true,
+            },
+            short_name : {
+                required : true,
+            },
+             email : {
+                required : true,
+                email:true
+            },
+            mobile : {
+                required : true,
+              
+            },
+            default_currency:{
+                required:true,
+
+            },
+            address:{
+                required:true,
+                
+            },
+            state:{
+                required:true,
+                
+            },
+            account_holder_name:{
+                required:true,
+                
+            },
+            bank_name:{
+                 required:true,
+             },
+             account_no:{
+                 required:true,
+             },
+        }
+    });
+}
+ </script>

@@ -1,0 +1,178 @@
+{% load rest_framework %}
+{% load common_function %}
+
+<!DOCTYPE html>
+<html lang="en">    
+
+{% include "ERP/includes/header.html" %}
+    <body>
+        <!-- Aside Start-->
+        {% include "ERP/includes/left_menu.html" %}
+        <!-- Aside Ends-->
+        <!--Main Content Start -->
+        <section class="content">
+            <!-- Header -->
+           {% include "ERP/includes/top_menu.html" %}
+            <!-- Header Ends -->
+            <!-- Page Content Start -->
+            <div class="wraper container-fluid">
+              
+               
+               <form  method="post" name="frm" id="frm">   
+                 {% csrf_token %}
+                <div class="page-title"> 
+                    <div class="col-md-6 ">
+                        <h3 class="title"> {{ module }}</h3> 
+                    </div>
+                    <div class="col-md-6 text-right">
+                     <a href="{% url 'ERP:tax_list' %}">  <i class="fa fa-eye fa-2x text-inverse"></i> </a>
+                    </div>
+                        
+                  </div>
+                 
+                 <div class="row">
+                                
+                                {% if  error_data  or  success_data%}
+                                
+                                 <div class="col-md-12">
+                                    <div   {% if  error_data  %} class="alert alert-danger"  {% endif %} {% if  success_data  %} class="alert  alert-success"  {% endif %}>
+                                    {% if  error_data  %}
+                                        {{error_data.Error.message}} 
+                                    
+                                         {% for  error_details in error_data.Error.error_details %}
+                                                {{error_data..Error.error_details}}
+                                                </Br>
+                                                {{error_details.field}} -> {{error_details.message}}
+                                          {% endfor %}
+                                 
+                                    {% endif %}
+                                    {% if  success_data %}
+                                        <strong>Well done!</strong> {{success_data}}.
+                                    {% endif %}
+                                    </div>
+                                </div>
+                               {% endif %}
+                   </div>
+                <div class="row">
+                        <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">{{ module }} Information</h3>
+ </div>
+                            <div class="panel-body">
+                                    
+                                 
+                                    <div class="form-group">
+                                       {% drop_down_list tableName="ERP_taxgroup" show_field_name="name" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="tax_group">Tax Group</label>
+                                        <select class="form-control" id="tax_group" name="tax_group" >
+                                            <option value="">-- Select Tax Group -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}" 
+                                                {% if list_dorp_val.id == data.tax_group %}
+    selected="true" 
+    {% endif%} 
+
+                                                > {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>  <div class="form-group">
+                                        <label for="tax">Tax Name</label>
+                                        <input type="text" class="form-control" id="tax_name" name="tax_name" value="{{data.tax_name}}" placeholder="Enter tax Name">
+                                    </div>
+                                   <div class="form-group">
+                                        <label for="tax">Tax Rate</label>
+                                        <input type="text" class="form-control" id="tax_per" name="tax_per" value="{{data.tax_per}}" placeholder="Enter tax Name">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="col-md-12 control-label">Tax Type:</label>
+                                        <div class="col-md-12">
+                                            <div class="radio-inline">
+                                                <label class="cr-styled" for="tax_type1">
+                                                    <input type="radio" id="tax_type1" name="tax_type" value="1"
+                                                     {% if  data.tax_type is  1 %}
+    checked="true" 
+    {% endif%} > 
+                                                    <i class="fa"></i>
+                                                    With in State 
+                                                </label>
+                                            </div>
+                                            <div class="radio-inline">
+                                                <label class="cr-styled" for="tax_type2">
+                                                    <input type="radio" id="tax_type2" name="tax_type" value="2"
+                                                     {% if  data.tax_type is  2 %}
+    checked="true" 
+    {% endif%} > 
+                                                    <i class="fa"></i> 
+                                                    Other State
+                                                </label>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>   
+                                    <!-- panel-body -->
+                        </div> <!-- panel -->
+
+                    </div>
+
+
+ </div>
+
+
+                    
+
+                <div class="row">
+
+                    <!-- Basic example -->
+                    <div class="col-md-12 text-right"  {% if view_mode %} style="display:none" {% endif%}>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                    <button type="submit" class="btn btn-success submit_btn" id="submit_frm" >Submit</button>
+                                    <button type="reset" class="btn btn-default reset_btn">Reset</button>
+                            </div><!-- panel-body -->
+                        </div> <!-- panel -->
+                    </div>
+                <!-- End row -->
+                 </form>
+                <!-- Form-validation -->
+              
+                
+            </div>
+            <!-- Page Content Ends -->
+            <!-- Footer Start -->
+            {% include "ERP/includes/footer.html" %}
+            <!-- Footer Ends -->
+        </section>
+        <!-- Main Content Ends -->
+    
+ {% include "ERP/includes/js_script.html" %}
+        <!-- js placed at the end of the document so the pages load faster -->
+    </body>
+</html>
+<script>
+$(document).ready(function() {
+    $("#submit_frm").click(function(){
+        FrmValidation();
+        //alert("RE:");
+    }); 
+    
+});
+function FrmValidation(){
+    $("#frm").validate({
+        rules : {
+            tax_name : {
+                required : true,
+            },
+            tax_group: {
+                required : true,
+            },
+            tax_per: {
+                required : true,
+                number:true,
+            }
+        }
+    });
+}
+ </script>

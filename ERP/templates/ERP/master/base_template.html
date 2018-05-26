@@ -1,0 +1,41 @@
+{% load rest_framework %}
+
+<!DOCTYPE html>
+<html lang="en">    
+{% include "ERP/includes/header.html" %}
+    <body>
+        <!-- Aside Start-->
+        {% include "ERP/includes/left_menu.html" %}
+        <!-- Aside Ends-->
+        <!--Main Content Start -->
+        <section class="content">
+            <!-- Header -->
+           {% include "ERP/includes/top_menu.html" %}
+            <!-- Header Ends -->
+            <!-- Page Content Start -->
+            <div class="wraper container-fluid">
+                <div class="page-title"> 
+                    <h3 class="title"> {{ module }}</h3> 
+                </div>
+
+                <div class="row">
+
+                </div> <!-- End row -->
+
+                <!-- Form-validation -->
+                <div class="row">
+                
+                </div> <!-- End row -->
+                
+            </div>
+            <!-- Page Content Ends -->
+            <!-- Footer Start -->
+            {% include "ERP/includes/footer.html" %}
+            <!-- Footer Ends -->
+        </section>
+        <!-- Main Content Ends -->
+    
+ {% include "ERP/includes/js_script.html" %}
+        <!-- js placed at the end of the document so the pages load faster -->
+    </body>
+</html>

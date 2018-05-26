@@ -1,0 +1,254 @@
+{% load rest_framework %}
+{% load common_function %}
+
+<!DOCTYPE html>
+<html lang="en">    
+
+{% include "ERP/includes/header.html" %}
+    <body>
+        <!-- Aside Start-->
+        {% include "ERP/includes/left_menu.html" %}
+        <!-- Aside Ends-->
+        <!--Main Content Start -->
+        <section class="content">
+            <!-- Header -->
+           {% include "ERP/includes/top_menu.html" %}
+            <!-- Header Ends -->
+            <!-- Page Content Start -->
+            <div class="wraper container-fluid">
+              
+               
+               <form  method="post" name="frm" id="frm">   
+                 {% csrf_token %}
+                <div class="page-title"> 
+                    <div class="col-md-6 ">
+                        <h3 class="title"> {{ module }}</h3> 
+                    </div>
+                    <div class="col-md-6 text-right">
+                     <a href="{% url 'ERP:list_company' %}">  <i class="fa fa-eye fa-2x text-inverse"></i> </a>
+                    </div>
+                        
+                  </div>
+                 
+                 <div class="row">
+                                
+                                {% if  error_data  or  success_data%}
+                                
+                                 <div class="col-md-12">
+                                    <div   {% if  error_data  %} class="alert alert-danger"  {% endif %} {% if  success_data  %} class="alert  alert-success"  {% endif %}>
+                                    {% if  error_data  %}
+                                        {{error_data.Error.message}} 
+                                    
+                                         {% for  error_details in error_data.Error.error_details %}
+                                                {{error_data..Error.error_details}}
+                                                </Br>
+                                                {{error_details.field}} -> {{error_details.message}}
+                                          {% endfor %}
+                                 
+                                    {% endif %}
+                                    {% if  success_data %}
+                                        <strong>Well done!</strong> {{success_data}}.
+                                    {% endif %}
+                                    </div>
+                                </div>
+                               {% endif %}
+                   </div>
+                <div class="row">
+                        <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">{{ module }} Information</h3>
+ </div>
+                            <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" id="name" name="name" value="{{data.name}}" placeholder="Enter Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="short_name">Short Name</label>
+                                        <input type="text" class="form-control" id="short_name" name="short_name" placeholder="Enter Short Name" value="{{data.short_name}}" >
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="email">Email address</label>
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter Email" value="{{data.email}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="mobile">Mobile</label>
+                                        <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Enter Mobile Number" value="{{data.mobile}}">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="phone">Phone</label>
+                                        <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter Phone Number" value="{{data.phone}}">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                       {% drop_down_list tableName="ERP_currency" show_field_name="name" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="default_currency">Default Currency</label>
+                                        <select class="form-control" id="default_currency" name="default_currency" placeholder="Enter Default Currency">
+                                            <option value="">-- Select Currency -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}" 
+                                                {% if list_dorp_val.id == data.default_currency %}
+    selected="true" 
+    {% endif%} 
+
+                                                > {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>                                    
+                                    <div class="form-group">
+                                        <label for="address">Address</label>
+                                        <textarea class="form-control" id="address" name="address">
+                                            {{data.address}}
+                                        </textarea>
+                                    </div>
+                                    <div class="form-group">
+                                       {% drop_down_list tableName="ERP_statemaster" show_field_name="state" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="state">State</label>
+                                        <select class="form-control" id="state" name="state" placeholder="Enter State">
+                                            <option value="">-- Select State -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}"
+                                              {% if list_dorp_val.id == data.state %}
+    selected="true" 
+    {% endif%} > {{ list_dorp_val.text }} </option>
+                                              
+                                            {% endfor %}
+                                        </select>
+                                    </div>                                    
+                                    
+                            </div><!-- panel-body -->
+                        </div> <!-- panel -->
+
+                    </div>
+
+
+
+
+
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">Account Information</h3></div>
+                            <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="pan_no">PAN</label>
+                                        <input type="text" class="form-control" id="pan_no" name="pan_no" placeholder="Enter PAN Number" value="{{data.pan_no}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bank_name">Bank Name</label>
+                                        <input type="text" class="form-control" id="bank_name"  value="{{data.bank_name}}" name="bank_name" placeholder="Enter Short Name">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="account_no">Account No</label>
+                                        <input type="text" class="form-control" id="account_no"  value="{{data.account_no}}" name="account_no" placeholder="Enter Account Number">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="account_holder_name">Account Holder</label>
+                                        <input type="text" class="form-control" id="account_holder_name" name="account_holder_name"  value="{{data.account_holder_name}}" placeholder="Enter Account Holder Name">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="ifsc_code">IFSC Code</label>
+                                        <input type="text" class="form-control" id="ifsc_code" name="ifsc_code"  value="{{data.ifsc_code}}" placeholder="Enter IFSC Code">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="gst_no">GST No</label>
+                                        <input type="text" class="form-control" id="gst_no" name="gst_no"  value="{{data.gst_no}}"  placeholder="Enter GST Account No">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cst_no">CST No</label>
+                                        <input type="text" class="form-control" id="cst_no" name="cst_no"  value="{{data.cst_no}}" placeholder="Enter CST Account No">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tin_no">TIN No</label>
+                                        <input type="text" class="form-control" id="tin_no" name="tin_no" value="{{data.tin_no}}" placeholder="Enter TIN Number">
+                                    </div>                               
+                            </div><!-- panel-body -->
+                        </div> <!-- panel -->
+                    </div>
+
+                <div class="row">
+
+                    <!-- Basic example -->
+                    <div class="col-md-12 text-right"  {% if view_mode %} style="display:none" {% endif%}>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                    <button type="submit" class="btn btn-success submit_btn" id="submit_frm" >Submit</button>
+                                    <button type="reset" class="btn btn-default reset_btn">Reset</button>
+                            </div><!-- panel-body -->
+                        </div> <!-- panel -->
+                    </div>
+                <!-- End row -->
+                 </form>
+                <!-- Form-validation -->
+              
+                
+            </div>
+            <!-- Page Content Ends -->
+            <!-- Footer Start -->
+            {% include "ERP/includes/footer.html" %}
+            <!-- Footer Ends -->
+        </section>
+        <!-- Main Content Ends -->
+    
+ {% include "ERP/includes/js_script.html" %}
+        <!-- js placed at the end of the document so the pages load faster -->
+    </body>
+</html>
+<script>
+$(document).ready(function() {
+    $("#submit_frm").click(function(){
+        FrmValidate();
+        //alert("RE:");
+    }); 
+    
+});
+function FrmValidate(){
+    $("#frm").validate({
+        rules : {
+            name : {
+                required : true,
+            },
+            short_name : {
+                required : true,
+            },
+             email : {
+                required : true,
+                email:true
+            },
+            mobile : {
+                required : true,
+              
+            },
+            default_currency:{
+                required:true,
+
+            },
+            address:{
+                required:true,
+                
+            },
+            state:{
+                required:true,
+                
+            },
+            account_holder_name:{
+                required:true,
+                
+            },
+            bank_name:{
+                 required:true,
+             },
+             account_no:{
+                 required:true,
+             },
+        }
+    });
+}
+ </script>

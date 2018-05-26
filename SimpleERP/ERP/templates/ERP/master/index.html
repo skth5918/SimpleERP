@@ -1,0 +1,149 @@
+{% load rest_framework %}
+<!DOCTYPE html>
+<html lang="en">
+    
+<!-- Mirrored from coderthemes.com/velonic_3.0/admin_4/form-validation.html by HTTrack Website Copier/3.x [XR&CO'2013], Sat, 12 Nov 2016 20:52:49 GMT -->
+{% include "ERP/includes/header.html" %}
+
+<style>
+.vl {
+    border-left: 3px solid #3960d1;
+    height: 500px;
+}
+</style>
+    <body>
+
+        <!-- Aside Start-->
+        {% include "ERP/includes/left_menu.html" %}
+        <!-- Aside Ends-->
+
+
+        <!--Main Content Start -->
+        <section class="content">
+            
+            <!-- Header -->
+           {% include "ERP/includes/top_menu.html" %}
+            <!-- Header Ends -->
+
+
+            <!-- Page Content Start -->
+            <!-- ================== -->
+
+            <div class="wraper container-fluid">
+                
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">Sales</h3></div>
+                            <div class="panel-body">
+                            <div class="col-sm-9">
+                            <div class="col-sm-12">
+                            <div class="form-group col-sm-8">
+										 <input type="text"
+											class="form-control" id="entry_date" name="entry_date"
+											value='' placeholder="Customer Name">
+							</div>
+							
+                            </div>
+                            <div class="col-sm-12"><hr></div>
+                            <div class="col-sm-12">
+                            
+                             <div class="col-sm-8">
+                             <input type="text" class="form-control" id="entry_date" name="entry_date"
+											value='' placeholder="Item Name">
+							
+							</div>
+							
+							<div class="col-sm-2"> 
+							<input type="text" class="form-control" id="entry_date" name="entry_date"
+											value='' placeholder="Qty">
+							</div>
+							
+							<div class="col-sm-2"><button type="submit" class="btn btn-success submit_btn" id="submit_frm">Add</button></div>
+                            </div>
+                            <div class="col-sm-12"><hr></div>
+                            <div class="col-sm-12">
+                            <table class="table">
+                            <tr>
+                            <th>S.No</th>
+                            <th>Item Name</th>
+                            
+                            <th>Qty</th>
+                            <th>Rate</th>
+                            <th>Amount</th>
+                            <th>Discount</th>	
+                            <th>Tax % </th>
+                            <th>Tax Amount</th>
+                            <th>Net Amount</th>
+                            <th>Action</th>
+                            </tr>
+                            </table>
+                            
+                            </div>
+                           
+                            
+                            </div>
+                            
+                            <div class="col-sm-3 vl">
+                              <div class="col-sm-12">
+                             <table class="table">
+                             <tr>
+                             <th>Total Amount</th>
+                             <td>:</td>
+                             <td>2000</td>
+                             </tr>
+                             
+                             <tr>
+                             <th>Discount Amount</th>
+                             <td>:</td>
+                             <td>2000</td>
+                             </tr>
+                             <tr>
+                             <th>Tax Amount</th>
+                             <td>:</td>
+                             <td>2000</td>
+                             </tr>
+                             
+                             <tr>
+                             <th>Net Amount</th>
+                             <td>:</td>
+                             <td>2000</td>
+                             </tr>
+                             </table>
+                             </div>
+                             <div class="col-sm-12" style="margin-top: 110%;">
+                            <button type="submit" class="btn btn-success su	bmit_btn" id="submit_frm">Pay  (F1)</button>
+                            <button type="submit" class="btn btn-primary submit_btn" id="submit_frm">Save (F2)</button>
+                         	 </div>
+                            </div>
+                                 <!-- .form -->
+                            </div> <!-- panel-body -->
+                        </div> <!-- panel -->
+                    </div> <!-- col -->
+
+                </div> <!-- End row -->
+
+
+                <!-- Form-validation -->
+                            <!-- Page Content Ends -->
+            <!-- ================== -->
+
+            <!-- Footer Start -->
+            {% include "ERP/includes/footer.html" %}
+            <!-- Footer Ends -->
+
+
+        </section>
+        <!-- Main Content Ends -->
+    
+
+ {% include "ERP/includes/js_script.html" %}
+        <!-- js placed at the end of the document so the pages load faster -->
+      
+
+
+    </body>
+
+<!-- Mirrored from coderthemes.com/velonic_3.0/admin_4/form-validation.html by HTTrack Website Copier/3.x [XR&CO'2013], Sat, 12 Nov 2016 20:52:50 GMT -->
+</html>

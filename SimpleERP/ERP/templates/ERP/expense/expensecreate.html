@@ -1,0 +1,203 @@
+{% load rest_framework %}
+{% load common_function %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "ERP/includes/header.html" %}
+    <body>
+        {% include "ERP/includes/left_menu.html" %}
+        <section class="content">
+           {% include "ERP/includes/top_menu.html" %}
+            <div class="wraper container-fluid">
+
+
+               <form  method="post" name="frm" id="frm">
+                 {% csrf_token %}
+                <div class="page-title">
+                    <div class="col-md-6 ">
+                        <h3 class="title"> {{ module }}</h3>
+                    </div>
+                    <div class="col-md-6 text-right">
+                     <a href="{% url 'ERP:list_expense' %}">  <i class="fa fa-eye fa-2x text-inverse"></i> </a>
+                    </div>
+
+                  </div>
+
+                 <div class="row">
+
+                                {% if  error_data  or  success_data%}
+
+                                 <div class="col-md-12">
+                                    <div   {% if  error_data  %} class="alert alert-danger"  {% endif %} {% if  success_data  %} class="alert  alert-success"  {% endif %}>
+                                    {% if  error_data  %}
+                                        {{error_data.Error.message}}
+
+                                         {% for  error_details in error_data.Error.error_details %}
+                                                {{error_data..Error.error_details}}
+                                                </Br>
+                                                {{error_details.field}} -> {{error_details.message}}
+                                          {% endfor %}
+
+                                    {% endif %}
+                                    {% if  success_data %}
+                                        <strong>Well done!</strong> {{success_data}}.
+                                    {% endif %}
+                                    </div>
+                                </div>
+                               {% endif %}
+                   </div>
+                <div class="row">
+                        <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">{{ module }} Information</h3>
+ </div>
+                            <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="id">ID</label>
+                                        <input type="number" class="form-control" id="id" name="id" value="{{data.id}}" placeholder="Enter Expense ID">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="expense_amt">Expense Amount</label>
+                                        <input type="number" class="form-control" id="expense_amt" name="expense_amount" value="{{data.expense_amt}}" placeholder="Enter Expense Amount">
+                                    </div>
+                                    <div class="form-group">
+                                       {% drop_down_list tableName="ERP_expensecategory" show_field_name="category_name" store_field_name="id" as list_dorp %}
+
+
+                                        <label for="expense_category">Category</label>
+                                        <select class="form-control" id="expense_category" name="expense_category">
+                                            <option value="">-- Select Category -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}"
+                                                {% if list_dorp_val.id == data.category_name %}
+                                                         selected="true"
+                                                        {% endif%}
+
+                                                > {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bill">Bill</label>
+                                        <input type="radio"  id="bill" name="bill"   value="{{data.bill}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <textarea class="form-control" id="description" name="description" value="{{data.description}}"}>
+
+                                        </textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="created_by">Created by</label>
+                                        <input type="text" class="form-control" id="created_by" name="created_by" placeholder="Enter Name of the creator" value="{{data.created_by}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="created_date">Created Date</label>
+                                        <input type="date" class="form-control" id="created_date" name="created_date" placeholder="Enter date of creation" value="{{data.created_date}}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="modified_by">Modified by</label>
+                                        <input type="text" class="form-control" id="modified_by" name="modified_by" placeholder="Enter Name of the modifier" value="{{data.modified_by}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="modified_date">Modified date</label>
+                                        <input type="date" class="form-control" id="modified_date" name="modified_date" placeholder="Enter date of modification" value="{{data.modified_date}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bill_no">Bill number</label>
+                                        <input type="number" class="form-control" id="bill_no" name="bill_no" value="{{data.bill_no}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="supplier">Supplier</label>
+                                        <input type="text" class="form-control" id="supplier" name="supplier" value="{{data.supplier}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tax">Tax</label>
+                                        <input type="number" class="form-control" id="tax" name="tax" value="{{data.tax}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="net_amt">Net Amount</label>
+                                        <input type="number" class="form-control" id="net_amt" name="net_amt" value="{{data.net_amt}}">
+                                    </div>
+
+
+
+
+
+
+
+
+
+
+                    <div class="col-md-12 text-right"  {% if view_mode %} style="display:none" {% endif%}>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                    <button type="submit" class="btn btn-success submit_btn" id="submit_frm" >Submit</button>
+                                    <button type="reset" class="btn btn-default reset_btn">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+
+                 </form>
+
+
+
+            </div>
+            {% include "ERP/includes/footer.html" %}
+        </section>
+
+ {% include "ERP/includes/js_script.html" %}
+    </body>
+</html>
+<script>
+$(document).ready(function() {
+
+    $(document).ready(function () {
+    radio = $('#bill');
+    dynamicField1 = $('#bil_no');
+    dynamicField2 = $('#supplier');
+    dynamicField3 = $('#tax');
+    dynamicField4 = $('#net_amt');
+
+    dynamicField1.hide();
+    dynamicField2.hide();
+    dynamicField3.hide();
+    dynamicField4.hide();
+    if ( radio.is(':checked') )
+    {
+        dynamicField1.show()
+        dynamicField2.show()
+        dynamicField3.show()
+        dynamicField4.show()
+    }
+
+});
+
+    $("#submit_frm").click(function(){
+        FrmValidate();
+        //alert("RE:");
+    });
+
+});
+function FrmValidate(){
+    $("#frm").validate({
+        rules : {
+            expense_amt : {
+                required : true,
+            },
+            expense_type : {
+                required : true,
+            },
+             created_by : {
+                required : true,
+            },
+            created_date : {
+                required : true,
+
+            }
+
+    });
+}
+ </script>

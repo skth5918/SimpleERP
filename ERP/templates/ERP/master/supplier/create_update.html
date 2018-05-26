@@ -1,0 +1,285 @@
+{% load rest_framework %}
+{% load common_function %}
+
+<!DOCTYPE html>
+<html lang="en">    
+<style type="text/css">
+    
+
+
+</style>
+{% include "ERP/includes/header.html" %}
+    <body>
+        <!-- Aside Start-->
+        {% include "ERP/includes/left_menu.html" %}
+        <!-- Aside Ends-->
+        <!--Main Content Start -->
+        <section class="content">
+            <!-- Header -->
+           {% include "ERP/includes/top_menu.html" %}
+            <!-- Header Ends -->
+            <!-- Page Content Start -->
+            <div class="wraper container-fluid">
+              
+               
+               <form  method="post" name="frm" id="frm">   
+                 {% csrf_token %}
+                <div class="page-title"> 
+                    <div class="col-md-6 ">
+                        <h3 class="title"> {{ module }}</h3> 
+                    </div>
+                    <div class="col-md-6 text-right">
+                     <a href="{% url 'ERP:supplier_list' %}">  <i class="fa fa-eye fa-2x text-inverse"></i> </a>
+                    </div>
+                        
+                  </div>
+                 
+                 <div class="row">
+                                
+                                {% if  error_data  or  success_data%}
+                                
+                                 <div class="col-md-12">
+                                    <div   {% if  error_data  %} class="alert alert-danger"  {% endif %} {% if  success_data  %} class="alert  alert-success"  {% endif %}>
+                                    {% if  error_data  %}
+                                        {{error_data.Error.message}} 
+                                    
+                                         {% for  error_details in error_data.Error.error_details %}
+                                                {{error_data..Error.error_details}}
+                                                </Br>
+                                                {{error_details.field}} -> {{error_details.message}}
+                                          {% endfor %}
+                                 
+                                    {% endif %}
+                                    {% if  success_data %}
+                                        <strong>Well done!</strong> {{success_data}}.
+                                    {% endif %}
+                                    </div>
+                                </div>
+                               {% endif %}
+                   </div>
+                <div class="row">
+                        <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">{{ module }} Information</h3>
+ </div>
+                            <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="name">Name <span class="err_msg">*</span></label>
+                                        <input type="text" class="form-control" id="name" name="name" value="{{data.name}}" placeholder="Enter Name">
+                                    </div>
+
+                                    <div class="form-group">
+                                       {% drop_down_list tableName="ERP_suppliergroup" show_field_name="name" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="suppliergroup">Supplier Group <span class="err_msg">*</span></label>
+                                        <select class="form-control" id="suppliergroup" name="suppliergroup" >
+                                            <option value="">-- Select Supplier  Group -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}" 
+                                                {% if list_dorp_val.id == data.suppliergroup %}
+    selected="true" 
+    {% endif%} > {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>  
+
+                                    <div class="form-group">
+                                        <label for="primary_contact_no"> Contact No<span class="err_msg">*</span></label>
+                                        <input type="text" class="form-control" id="primary_contact_no" name="primary_contact_no" placeholder="Enter  Contact No" value="{{data.primary_contact_no}}" >
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="email_id">Email ID<span class="err_msg">*</span></label>
+                                        <input type="email_id" class="form-control" id="email_id" name="email_id" placeholder="Enter Email" value="{{data.email_id}}">
+                                    </div>
+                                   <div class="form-group">
+                                        <label for="address">Address <span class="err_msg">*</span></label>
+                                        <textarea class="form-control" id="address" name="address">
+                                            {{data.address}}
+                                        </textarea>
+                                    </div>
+                                    <div class="form-group">
+                                       {% drop_down_list tableName="ERP_statemaster" show_field_name="state" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="state">State <span class="err_msg">*</span></label>
+                                        <select class="form-control" id="state" name="state" placeholder="Enter State">
+                                            <option value="">-- Select State -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}"
+                                              {% if list_dorp_val.id == data.state %}
+    selected="true" 
+    {% endif%} > {{ list_dorp_val.text }} </option>
+                                              
+                                            {% endfor %}
+                                        </select>
+                                    </div> 
+                                    <div class="form-group">
+                                       {% drop_down_list tableName="ERP_company" show_field_name="name" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="default_currency">Company<span class="err_msg">*</span> </label>
+                                        <select class="form-control" id="company" name="company" placeholder="Enter Default company">
+                                            <option value="">-- Select company -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}" 
+                                                {% if list_dorp_val.id == data.company %}
+    selected="true" 
+    {% endif%} 
+
+                                                > {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>  
+                                    <div class="form-group">
+                                       {% drop_down_list tableName="ERP_currency" show_field_name="name" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="default_currency">Default Currency <span class="err_msg">*</span></label>
+                                        <select class="form-control" id="default_currency" name="default_currency" placeholder="Enter Default Currency">
+                                            <option value="">-- Select Currency -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}" 
+                                                {% if list_dorp_val.id == data.default_currency %}
+    selected="true" 
+    {% endif%} 
+
+                                                > {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>    
+                                    
+                                    
+                                    
+                                 </div><!-- panel-body -->
+                        </div> <!-- panel -->
+
+                    </div>
+
+ <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">Account Information</h3></div>
+                            <div class="panel-body">
+                                <div class="form-group"><div class="form-group">
+                                        <label for="contact_person">Contact Person </label>
+                                        <input type="text" class="form-control" id="contact_person" name="contact_person" placeholder="Enter Contact  Person" value="{{data.contact_person}}">
+                                    </div> <div class="form-group">
+                                        <label for="contact_person_contact_no">Contact Person  No</label>
+                                        <input type="text" class="form-control" id="contact_person_contact_no" name="contact_person_contact_no" placeholder="Enter Phone Number" value="{{data.contact_person_contact_no}}">
+                                    </div>
+                                     <div class="form-group">
+                                        <label for="contact_person_email_id">Contact Person  Email</label>
+                                        <input type="text" class="form-control" id="contact_person_email_id" name="contact_person_email_id" placeholder="Enter Email ID" value="{{data.contact_person_email_id}}">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="secondary_contact_no">Secondary Contact  No </label>
+                                        <input type="text" class="form-control" id="secondary_contact_no" name="secondary_contact_no" placeholder="Enter Phone Number" value="{{data.secondary_contact_no}}">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="secondary_email_id">Secondary Email</label>
+                                        <input type="text" class="form-control" id="secondary_email_id" name="secondary_email_id" placeholder="Enter  Email  ID" value="{{data.secondary_email_id}}">
+                                    </div>
+                                      <div class="form-group">
+                                        <label for="gst_no">GST No</label>
+                                        <input type="text" class="form-control" id="gst_no" name="gst_no"  value="{{data.gst_no}}"  placeholder="Enter GST Account No">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="bank_name">Bank Name</label>
+                                        <input type="text" class="form-control" id="bank_name"  value="{{data.bank_name}}" name="bank_name" placeholder="Enter Short Name">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="account_no">Account No</label>
+                                        <input type="text" class="form-control" id="account_no"  value="{{data.account_no}}" name="account_no" placeholder="Enter Account Number">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="account_holder_name">Account Holder</label>
+                                        <input type="text" class="form-control" id="account_holder_name" name="account_holder_name"  value="{{data.account_holder_name}}" placeholder="Enter Account Holder Name">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="ifsc_code">IFSC Code</label>
+                                        <input type="text" class="form-control" id="ifsc_code" name="ifsc_code"  value="{{data.ifsc_code}}" placeholder="Enter IFSC Code">
+                                    </div>
+                                  
+                                                               
+                            </div><!-- panel-body -->
+                        </div> <!-- panel -->
+                    </div>
+ </div>
+                <div class="row">
+
+                    <!-- Basic example -->
+                    <div class="col-md-12 text-right"  {% if view_mode %} style="display:none" {% endif%}>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                    <button type="submit" class="btn btn-success submit_btn" id="submit_frm" >Submit</button>
+                                    <button type="reset" class="btn btn-default reset_btn">Reset</button>
+                            </div><!-- panel-body -->
+                        </div> <!-- panel -->
+                    </div>
+                <!-- End row -->
+                 </form>
+                <!-- Form-validation -->
+              
+                
+            </div>
+            <!-- Page Content Ends -->
+            <!-- Footer Start -->
+            {% include "ERP/includes/footer.html" %}
+            <!-- Footer Ends -->
+        </section>
+        <!-- Main Content Ends -->
+    
+ {% include "ERP/includes/js_script.html" %}
+        <!-- js placed at the end of the document so the pages load faster -->
+    </body>
+</html>
+<script>
+$(document).ready(function() {
+    $("#submit_frm").click(function(){
+        FrmValidate();
+        //alert("RE:");
+    }); 
+    
+});
+function FrmValidate(){
+    $("#frm").validate({
+        rules : {
+            name : {
+                required : true,
+            },
+            suppliergroup : {
+                required : true,
+            },
+             email_id : {
+                required : true,
+                email:true
+            },
+            primary_contact_no : {
+                required : true,
+              
+            },
+           
+            address:{
+                required:true,
+                
+            },
+            state:{
+                required:true,
+                
+            },
+             default_currency:{
+                required:true,
+                
+            }, company:{
+                required:true,
+                
+            },
+        }
+    });
+}
+ </script>

@@ -1,0 +1,329 @@
+{% load rest_framework %} {% load common_function %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<style>
+hr {
+	display: block;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	margin-left: auto;
+	margin-right: auto;
+	border-style: inset;
+	border-width: 1px;
+}
+</style>
+{% include "ERP/includes/header.html" %}
+<body>
+	<!-- Aside Start-->
+	{% include "ERP/includes/left_menu.html" %}
+	<!-- Aside Ends-->
+	<!--Main Content Start -->
+	<section class="content">
+		<!-- Header -->
+		{% include "ERP/includes/top_menu.html" %}
+		<!-- Header Ends -->
+		<!-- Page Content Start -->
+		<div class="wraper container-fluid">
+
+
+			<form method="post" name="frm" id="frm">
+				{% csrf_token %}
+				<div class="page-title">
+					<div class="col-md-6 ">
+						<h3 class="title">{{ module }}</h3>
+					</div>
+					<div class="col-md-6 text-right">
+						<a href="{% url 'ERP:price_list' %}"> <i
+							class="fa fa-eye fa-2x text-inverse"></i>
+						</a>
+					</div>
+
+				</div>
+
+				<div class="row">
+
+					{% if error_data or success_data%}
+
+					<div class="col-md-12">
+						<div {% if error_data  %} 
+							class="alert alert-danger"
+							{% endif %} 
+							
+							{% if success_data  %}  class="alert  alert-success" {% endif %}>
+							{% if error_data %} {{error_data.Error.message}} 
+							{% for error_details in error_data.Error.error_details %}
+							{{error_data..Error.error_details}} </Br> {{error_details.field}} ->
+							{{error_details.message}} {% endfor %} {% endif %} {% if
+							success_data %} <strong>Well done!</strong> {{success_data}}. {%
+							endif %}
+						</div>
+					</div>
+					{% endif %}
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title">{{ module }}</h3>
+							</div>
+							<div class="panel-body">
+								<div class="col-md-12">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label for="name">Item Name</label><span class="err_msg">*</span> <input type="text"
+												class="form-control" id="item_name" name=item_name
+											
+	value='{% show_single_field tableName="ERP_item" show_field_name="name" pk=data.item as list_dorp %} {{list_dorp}}'
+							
+                           placeholder="Enter  Item Code">
+											<input type="hidden" class="form-control" id="item"
+												name="item" value="{{data.item}}">
+												<input type="hidden" class="form-control" id="tax_per"
+												name="tax_per">
+										</div>
+
+										</div>
+										<div class="col-md-6">
+										<div class="form-group">
+											{% drop_down_list tableName="ERP_company" show_field_name="name" store_field_name="id" as list_dorp %}
+
+
+											<label for="company">Company</label> <span class="err_msg">*</span><select
+												class="form-control" id="company" name="company">
+												<option value="">-- Select Company --</option> {% for list_dorp_val in list_dorp %}
+												<option value="{{ list_dorp_val.id }}" 
+												 {% if list_dorp_val.id == data.company %}
+    selected="true" 
+    {% endif%} 
+												>
+													{{ list_dorp_val.text }}
+													
+													
+													</option> 
+													
+													
+													{% endfor %}
+											</select>
+										</div>
+								  	</div>
+									
+
+								</div>
+								<div class="col-md-12">
+									<hr>
+								</div>
+
+
+								<div class="col-md-12">
+								<div class="form-group col-md-3">
+										<label for="buying_price">Buying Price</label><span class="err_msg">*</span> <input type="text"
+											class="form-control" id="buying_price" name="buying_price"
+											value="{{data.buying_price}}" placeholder="Enter Buying Price">
+												
+									</div>
+									<div class="form-group col-md-3">
+                                       {% drop_down_list tableName="ERP_taxgroup" show_field_name="name" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="buying_tax_group">Tax Group</label>
+                                        <select class="form-control" id="buying_tax_group" name="buying_tax_group">
+                                            <option value="">-- Select Tax Group -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}" 
+                                                {% if list_dorp_val.buying_tax_group == data.tax_group %}
+    selected="true" 
+    {% endif%} 
+
+                                                > {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div> 
+									<div class="form-group col-md-3">
+										<label for="buying_tax_amount">Tax Amount</label> <input type="text"
+											class="form-control" id="buying_tax_amount" name="buying_tax_amount"
+											value="{{data.buying_tax_amount}}" placeholder="Tax Amount">
+												
+									</div>
+									<div class="form-group col-md-3">
+										<label for="buying_price_with_tax">Buying Price With Tax</label> <input type="text"
+											class="form-control" id="buying_price_with_tax" name="buying_price_with_tax"
+											value="{{data.buying_price_with_tax}}" placeholder="Buying Price With Tax">
+											
+									</div>
+								</div>
+								<div class="col-md-12">
+								<div class="form-group col-md-3">
+										<label for="selling_price">Selling Price</label> <span class="err_msg">*</span><input type="text"
+											class="form-control" id="selling_price" name="selling_price"
+											value="{{data.selling_price}}" placeholder="Enter Selling Price">
+										</div>
+									
+									<div class="form-group col-md-3">
+                                       {% drop_down_list tableName="ERP_taxgroup" show_field_name="name" store_field_name="id" as list_dorp %}
+                                       
+
+                                        <label for="selling_tax_group">Tax Group</label>
+                                        <select class="form-control" id="selling_tax_group" name="selling_tax_group">
+                                            <option value="">-- Select Tax Group -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}" 
+                                                {% if list_dorp_val.selling_tax_group == data.tax_group %}
+    selected="true" 
+    {% endif%}> {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>  
+									<div class="form-group col-md-3">
+										<label for="selling_tax_amount">Tax Rate</label> <input type="text"
+											class="form-control" id="selling_tax_amount" name="selling_tax_amount"
+											value="{{data.selling_tax_amount}}" placeholder="Tax Amount">
+								</div>
+									<div class="form-group col-md-3">
+										<label for="selling_price_with_tax">Selling Price With Tax</label> <input type="text"
+											class="form-control" id="selling_price_with_tax" name="selling_price_with_tax"
+											value="{{data.selling_price_with_tax}}" placeholder="Selling Price With Tax">
+										
+									</div>
+									<div class="form-group col-md-6">
+										<label for="max_discount_per">Max Discount Allowed (%)</label> <input type="text"
+											class="form-control" id="max_discount_per" name=max_discount_per
+											value="{{data.max_discount_per}}" placeholder="Max Discount Allowed (%)">
+										
+									</div>
+								</div>
+								
+								
+								<!-- panel-body -->
+							</div>
+							<!-- panel -->
+
+						</div>
+
+
+					</div>
+
+
+
+
+					<div class="row">
+
+						<!-- Basic example -->
+						<div class="col-md-12 text-right" {% if view_mode %} style="display: none"{% endif %}>
+							<div class="panel panel-default">
+
+								
+								<div class="panel-body">
+									<button type="submit" class="btn btn-success submit_btn"
+										id="submit_frm">Submit</button>
+									<button type="reset" class="btn btn-default reset_btn">Reset</button>
+								</div>
+
+								
+								<!-- panel-body -->
+							</div>
+							<!-- panel -->
+						</div>
+						<!-- End row -->
+			</form>
+			<!-- Form-validation -->
+
+
+		</div>
+		<!-- Page Content Ends -->
+		<!-- Footer Start -->
+		{% include "ERP/includes/footer.html" %}
+		<!-- Footer Ends -->
+	</section>
+	<!-- Main Content Ends -->
+
+	{% include "ERP/includes/js_script.html" %}
+	{% include "ERP/includes/autocomplete.html" %}
+	<!-- js placed at the end of the document so the pages load faster -->
+</body>
+</html>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"> </script> -->
+<!-- jQuery UI !-->
+
+<script>
+	$(document).ready(function() {
+		$("#submit_frm").click(function() {
+		//	FrmValidation();	
+		});
+		  
+		  
+	});
+	
+	
+	function FrmValidation()
+	{ 
+		$("#frm").validate({
+			rules : {
+				item_name : {
+					required : true,
+				},
+				company : {
+					required : true,
+				},
+				buying_price : {
+					required : true,
+				},
+				
+				selling_price : {
+					required : true,
+				},
+
+			}
+			  
+
+		});
+		
+		//return false;
+		
+	}
+	  $(function() {
+	    $("#item_name").autocomplete({
+	      source: "/erp/item/item_list_autocomplete/",
+	      select: function (event, ui) { //item selected
+	        AutoCompleteSelectHandler(event, ui)
+	      },
+	      minLength: 2,
+	    });
+	  });
+
+	  function AutoCompleteSelectHandler(event, ui)
+	  {
+		  var selectedObj = ui.item;
+	        $("#item").val(selectedObj.id);
+	        $("#tax_per").val(selectedObj.tax_per)
+			$("#buying_tax_group").val(selectedObj.tax_group)
+			$("#selling_tax_group").val(selectedObj.tax_group)
+			
+	        //alert();
+	  }
+	 
+	  $("#buying_price").keyup(function(){
+		
+		  buying_price=$("#buying_price").val()
+		  tax_per=$("#tax_per").val();
+		  tax_rate=parseFloat(buying_price)*parseFloat(tax_per/100);
+		  $("#buying_tax_amount").val(tax_rate);
+		  buying_price_with_tax=parseFloat(tax_rate)+parseFloat(buying_price)
+		  $("#buying_price_with_tax").val(buying_price_with_tax);
+		  
+		  
+	  })
+	   $("#selling_price").keyup(function(){
+		
+		  selling_price=$("#selling_price").val()
+		  tax_per=$("#tax_per").val();
+		  tax_rate=parseFloat(selling_price)*parseFloat(tax_per/100);
+		  $("#selling_tax_amount").val(tax_rate);
+		  selling_price_with_tax=parseFloat(tax_rate)+parseFloat(selling_price);
+		  $("#selling_price_with_tax").val(selling_price_with_tax);
+		  
+		  
+	  })
+	  
+	   
+	    
+</script>

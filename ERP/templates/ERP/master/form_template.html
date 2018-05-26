@@ -1,0 +1,98 @@
+{% load rest_framework %}
+
+<!DOCTYPE html>
+<html lang="en">    
+{% include "ERP/includes/header.html" %}
+    <body>
+        <!-- Aside Start-->
+        {% include "ERP/includes/left_menu.html" %}
+        <!-- Aside Ends-->
+        <!--Main Content Start -->
+        <section class="content">
+            <!-- Header -->
+           {% include "ERP/includes/top_menu.html" %}
+            <!-- Header Ends -->
+            <!-- Page Content Start -->
+            <div class="wraper container-fluid">
+                <form role="form" class="p-20">
+                <div class="page-title"> 
+                    <h3 class="title"> {{ module }}</h3> 
+                </div>
+                <div class="row">
+                    <!-- Basic example -->
+                      <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">Basic example</h3></div>
+                            <div class="panel-body">
+                                
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Email address</label>
+                                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Password</label>
+                                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="cr-styled">
+                                            <input type="checkbox">
+                                            <i class="fa"></i> 
+                                            Remember me
+                                        </label>
+                                    </div>
+                                    
+                               
+                            </div><!-- panel-body -->
+                        </div> <!-- panel -->
+                    </div>  <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">Basic example</h3></div>
+                            <div class="panel-body">
+                                
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Email address</label>
+                                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword1">Password</label>
+                                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="cr-styled">
+                                            <input type="checkbox">
+                                            <i class="fa"></i> 
+                                            Remember me
+                                        </label>
+                                    </div>
+                                    
+                               
+                            </div><!-- panel-body -->
+                        </div> <!-- panel -->
+                </div>                                  
+                <div class="row">
+                    <!-- Basic example -->
+                    <div class="col-md-12 text-right">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                    <button type="submit" class="btn btn-success submit_btn">Submit</button>
+                                    <button type="reset" class="btn btn-default reset_btn">Reset</button>
+                            </div><!-- panel-body -->
+                        </div> <!-- panel -->
+                    </div>
+                <!-- End row -->
+                 </form>
+                <!-- Form-validation -->
+              
+                
+            </div>
+            <!-- Page Content Ends -->
+            <!-- Footer Start -->
+            {% include "ERP/includes/footer.html" %}
+            <!-- Footer Ends -->
+        </section>
+        <!-- Main Content Ends -->
+    
+ {% include "ERP/includes/js_script.html" %}
+        <!-- js placed at the end of the document so the pages load faster -->
+    </body>
+</html>

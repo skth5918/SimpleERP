@@ -1,0 +1,31 @@
+{% load rest_framework %}
+{% load common_function %}
+<!DOCTYPE html>
+<html lang="en">
+{% include "ERP/includes/header.html" %}
+
+
+    <body>
+       <div class="wrapper-page animated fadeInDown">
+            <div class="panel col-lg-12 panel-color panel-primary">
+                <div class="panel-heading" style="margin-top: 10px;">
+                   <h3 class="text-center m-t-10"> Register for <strong>{% application_name as appname  %} {{ appname }}</strong> </h3>
+                </div>
+                    {% block content %}
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button class="btn btn-purple w-md" type="submit">Sign up</button>
+                         </form>
+                    {% endblock %}
+
+            </div>
+        </div>
+
+            </div>
+ {% include "ERP/includes/js_script.html" %}
+
+
+
+    </body>
+</html>

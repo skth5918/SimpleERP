@@ -1,0 +1,146 @@
+{% load rest_framework %} {% load common_function %} {% load static %}
+{% include "ERP/includes/header.html" %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<title>Receipt</title>
+
+<style>
+.sheet {
+	margin: 0;
+	overflow: hidden;
+	position: relative;
+	box-sizing: border-box;
+	page-break-after: always;
+}
+
+body.A51           .sheet {
+	widtd: 128mm;
+	height: 209mm
+}
+
+.header {
+	float: center;
+	text-align: center;
+	font-size: 25px;
+	padding: 23px;
+}
+
+.address {
+	float: center;
+	text-align: center;
+	font-size: 15px;
+	padding: 13px;
+}
+
+.bill_list {
+	font-size: 12px;;
+}
+
+/** For screen preview **/
+@media screen {
+	body {
+		background: #e0e0e0
+	}
+	.sheet {
+		background: white;
+		box-shadow: 0 .5mm 2mm rgba(0, 0, 0, .3);
+		margin: 5mm;
+	}
+}
+
+/** Fix for Chrome issue #273306 **/
+@media print {
+	body.A3.landscape {
+		widtd: 420mm
+	}
+	body.A3, body.A4.landscape {
+		widtd: 297mm
+	}
+	body.A4, body.A5.landscape {
+		widtd: 210mm
+	}
+	body.A5 {
+		widtd: 148mm
+	}
+}
+</style>
+</head>
+
+<!-- Set "A5", "A4" or "A3" for class name -->
+<!-- Set also "landscape" if you need -->
+<body class="A51">
+
+	<!-- Each sheet element should have tde class "sheet" -->
+	<!-- "padding-**mm" is optional: you can set 10, 15, 20 or 25 -->
+	<section class="sheet padding-5mm">
+		<div class="header col-md-12">
+			Codesupporter
+			<div class="address">
+				#222 8td cross Street ,<br>Puliur Main Road Transtpuram,<br>
+				Kodambakkam-600029<br> Ph:9566411497
+			</div>
+
+		</div>
+		<div class="col-md-12 bill_list">
+			<table class="table bill_list">
+				<tr>
+					<th>#</th>
+					<th>Item Name</th>
+					<th>Qty</th>
+					<th>Rate</th>
+					<th>Amount</th>
+					<th>Tax</th>
+					<th>Net Amout</th>
+				</tr>
+				{% for lists_val in data %}
+				<tr>
+					<td>{{forloop.counter}}</td>
+					<td>{{lists_val.item.name}}</td>
+					<td>{{lists_val.qty}}</td>
+					<td>{{lists_val.rate}}</td>
+					<td>{{lists_val.bill_amount_before_tax}}</td>
+					<td>{{lists_val.taxgroup.name}}- {{lists_val.tax_amount}}</td>
+					<td>{{lists_val.net_amount}}</td>
+				</tr>
+				{% endfor %}
+				<tr>
+					<th colspan="3"></th>
+					<th colspan="3">Total Amount</th>
+
+					<th>{{basic_data.bill_amount}}</th>
+				</tr>
+				<tr>
+					<th colspan="3"></th>
+					<th colspan="3">Discount Amount</th>
+					<th>{{basic_data.item_discount}}</th>
+				</tr>
+				<tr>
+					<th colspan="3"></th>
+					<th colspan="3">Tax Amount</th>
+
+					<th colspan="">{{basic_data.tax_amount}}</th>
+				</tr>
+				<tr>
+					<th colspan="3"></th>
+					<th colspan="3">Net Amount</th>
+
+					<th>{{basic_data.net_amount}}</th>
+				</tr>
+
+				<tbody>
+			</table>
+		</div>
+	</section>
+
+</body>
+
+</html>
+
+
+
+{% include "ERP/includes/js_script.html" %}
+

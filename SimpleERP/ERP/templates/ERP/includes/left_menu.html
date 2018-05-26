@@ -1,0 +1,82 @@
+{%load static%}
+<aside class="left-panel collapsed">
+
+	<!-- brand -->
+	<div class="logo">
+		<a href="index-2.html" class="logo-expanded"> <img
+			src="{%static 'ERP/img/favicon-16x16.png' %}"></img> <span
+			class="nav-label">CS</span>
+		</a>
+	</div>
+	<nav class="navigation">
+		<ul class="list-unstyled">
+			<!-- 			<li class=""><a href="#"><i class="zmdi zmdi-view-dashboard"></i> -->
+			<!-- 					<span class="nav-label">Dashboard</span></a></li> -->
+
+
+			<li><a href="{% url 'ERP:sales_create' %}"><i
+					class="zmdi zmdi zmdi-shopping-cart"></i>Selling </a></li>
+
+			<li><a href="{% url 'ERP:price_list' %}"><i
+					class="fa fa-tags"></i>Price </a></li>
+
+
+
+			<li class="has-submenu"><a href="#"><i
+					class="zmdi zmdi-truck"></i> <span class="nav-label">Stock</span><span
+					class="menu-arrow"></span></a>
+				<ul class="list-unstyled">
+					<li><a href="{% url 'ERP:stockentry_list' %}">Stock Entry</a></li>
+					<li><a href="{% url 'ERP:purchase_list' %}">Puchase</a></li>
+				</ul></li>
+
+			<li class="has-submenu"><a href="#"><i class="fa fa-users"></i>
+					<span class="nav-label">Members</span><span class="menu-arrow"></span></a>
+				<ul class="list-unstyled">
+					<li><a href="{% url 'ERP:customer_list' %}">Customer</a></li>
+					<li><a href="{% url 'ERP:supplier_list' %}">Supplier</a></li>
+				</ul></li>
+			<li class="has-submenu"><a href="#"><i
+					class="zmdi zmdi-settings"></i> <span class="nav-label">Masters</span><span
+					class="menu-arrow"></span></a>
+				<ul class="list-unstyled">
+					<li><a href="{% url 'ERP:list_unit' %}">Unit</a></li>
+					<li><a href="{% url 'ERP:itemgroup_list' %}">Item Group</a></li>
+					<li><a href="{% url 'ERP:itemcolor_list' %}">Item Color</a></li>
+					<li><a href="{% url 'ERP:itemsize_list' %}">Item Size</a></li>
+					<li><a href="{% url 'ERP:itembrand_list' %}">Item Brand</a></li>
+
+					<li><a href="{% url 'ERP:item_list' %}">Item</a></li>
+				</ul></li>
+			<li class="has-submenu"><a href="#"><i
+					class="zmdi zmdi-store"></i> <span class="nav-label">Masters</span><span
+					class="menu-arrow"></span></a>
+				<ul class="list-unstyled">
+
+					<li><a href="{% url 'ERP:customergroup_list' %}">Customer
+							Group</a></li>
+					<li><a href="{% url 'ERP:taxgroup_list' %}">Tax Group</a></li>
+					<li><a href="{% url 'ERP:tax_list' %}">Tax</a></li>
+					<li><a href="{% url 'ERP:customergroup_list' %}">Customer
+							Group</a></li>
+
+					<li><a href="{% url 'ERP:suppliergroup_list' %}">Supplier
+							Group</a></li>
+					<li><a href="{% url 'ERP:list_company' %}">Company</a></li>
+					<li><a href="{% url 'ERP:list_currency' %}">Currency</a></li>
+					<li><a href="{% url 'ERP:list_state' %}">State</a></li>
+					<li><a href="{% url 'ERP:list_warehouse' %}">Warehouse</a></li>
+
+
+				</ul></li>
+
+
+
+
+
+
+
+		</ul>
+	</nav>
+
+</aside>

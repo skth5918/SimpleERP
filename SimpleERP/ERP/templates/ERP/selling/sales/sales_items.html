@@ -1,0 +1,187 @@
+{% load rest_framework %} {% load common_function %} {% load static %}
+<style>
+.items_table {
+	max-height: 400px;
+}
+</style>
+<div class="col-sm-9">
+	<div class="table-responsive items_table">
+	
+		<table class="table">
+			<tr>
+				<th>S.No</th>
+				<th>Item Name</th>
+
+				<th>Qty</th>
+				<th>Rate</th>
+				<th>Amount</th>
+				<th style="text-align: center">Discount</th>
+
+				<th>Tax %</th>
+				<th>Tax Amount</th>
+				<th>Net Amount</th>
+				<th>Action</th>
+			</tr>
+			{% for lists_val in data %}
+			<tr>
+				<td>{{forloop.counter}}</td>
+				<td>{% show_single_field tableName="ERP_item" show_field_name="name" pk=lists_val.item_id as list_dorp %}
+					{{list_dorp}}- {% show_single_field tableName="ERP_item" show_field_name="item_code" pk=lists_val.item_id as list_dorp %}
+					{{list_dorp}}</td>
+
+				<td>{{lists_val.qty}}</td>
+				<td>{{lists_val.rate}}</td>
+				<td>{{lists_val.bill_amount}}</td>
+				<td>
+					<div class="col-sm-12">
+						
+						<div class="col-sm-6">
+							<input type="text" class="form-control"
+								id="item_discount_val{{forloop.counter}}"
+								name="item_discount_val{{forloop.counter}}" value="{{lists_val.discount_val}}"
+								placeholder="Value"
+								onkeyup="return discount_cal(this.value,1,{{forloop.counter}})">
+						</div>
+						<div class="col-sm-6">
+							<input type="text" class="form-control"
+								id="item_discount_per{{forloop.counter}}"
+								name="item_discount_per{{forloop.counter}}" value="{{lists_val.discount_per}}"
+								placeholder="%"
+								onkeyup="return discount_cal(this.value,2,{{forloop.counter}})">
+						</div>
+						<div class="col-sm-6">
+							<br>
+							<input type="text" class="form-control"
+								id="item_discount_total{{forloop.counter}}"
+								name="item_discount_total{{forloop.counter}}"
+								 value="{{lists_val.discount}}"
+								placeholder="Enter Discount Amount" readonly="true">
+						</div>
+						<div class="col-sm-6">
+							<br>
+							<button type="button" class="btn btn-warning" id="discount" onclick="return discount_apply({{forloop.counter}})">Apply</button>
+
+							<input type="hidden" class="form-control"
+								id="item_bill_amount{{forloop.counter}}"
+								name="item_bill_amount{{forloop.counter}}" value="{{lists_val.bill_amount}}"
+								> <input type="hidden"
+								class="form-control" id="item_tax_per{{forloop.counter}}"
+								name="item_tax_per{{forloop.counter}}" value="{{lists_val.tax_per}}"
+								placeholder="%">
+								
+								<input type="hidden"
+								class="form-control" id="salesinvoice_item_id{{forloop.counter}}"
+								name="salesinvoice_item_id{{forloop.counter}}" value="{{lists_val.id}}"
+								placeholder="%">
+								
+
+						</div>
+				</td>
+				<td>{% show_single_field tableName="ERP_taxgroup" show_field_name="name" pk=lists_val.taxgroup_id as list_dorp %}
+					{{list_dorp}}</td>
+				<td><div id="item_tax_div{{forloop.counter}}">{{lists_val.tax_amount}}</div></td>
+				<td><div id="item_net_div">{{lists_val.net_amount}}</div></td>
+				<td><a href="javascript:void(0)"
+					onclick="return  items_delete({{lists_val.id}});"><i
+						class="fa fa-trash"></i></a> <a href="javascript:void(0)"
+					onclick="return  items_edit({{lists_val.id}});"><i
+						class="fa fa-edit"></i></a></td>
+			</tr>
+			{% endfor %}
+		</table>
+
+
+
+	</div>
+</div>
+<div class="col-sm-3 vl">
+	<div class="col-sm-12">
+		<table class="table">
+			<tr>
+				<th>Total Amount</th>
+				<td>:</td>
+				<td>{{basic_data.bill_amount}}</td>
+			</tr>
+
+			<tr>
+				<th>Item Discount Amount</th>
+				<td>:</td>
+				<td>{{basic_data.item_discount}}</td>
+			</tr>
+			<tr>
+				<th>Discount Amount</th>
+				<td>:</td>
+				<td><input type="text" class="form-control"
+					id="invoice_discount" name="invoice_discount"
+					value="{{basic_data.discount}}" placeholder="Enter Discount Amount">
+
+
+
+
+					<input type="hidden" class="form-control" id="total_bill_amount"
+					name="total_bill_amount" value="{{basic_data.bill_amount}}"
+					placeholder="Enter Discount Amount"> <input type="hidden"
+					class="form-control" id="total_item_discount"
+					name="total_item_discount" value="{{basic_data.item_discount}}"
+					placeholder="Enter Discount Amount"> <input type="hidden"
+					class="form-control" id="total_tax_amount" name="total_tax_amount"
+					value="{{basic_data.tax_amount}}"
+					placeholder="Enter Discount Amount"> <input type="hidden"
+					class="form-control" id="total_net_amount" name="total_net_amount"
+					value="{{basic_data.net_amount}}"
+					placeholder="Enter Discount Amount"> <input type="hidden"
+					class="form-control" id="new_tax_amount" name="new_tax_amount"
+					value="" placeholder="Enter Discount Amount"> <input
+					type="hidden" class="form-control" id="new_net_amount"
+					name="new_net_amount" value="" placeholder="Enter Discount Amount">
+
+					<input type="hidden" class="form-control" id="berfore_tax"
+					name="berfore_tax" value="" placeholder="Enter Discount Amount"></td>
+			</tr>
+
+			<tr>
+
+				<th>Tax Amount</th>
+				<td>:</td>
+				<td><div id="tax_div">{{basic_data.tax_amount}}</div></td>
+			</tr>
+
+			<tr>
+				<th>Net Amount</th>
+				<td>:</td>
+				<td><div id="nettotal_div">{{basic_data.net_amount}}</div></td>
+			</tr>
+		</table>
+	</div>
+	<div class="col-sm-12" style="margin-top: 10%;">
+		<div class="col-sm-6">
+			<button type="submit" class="btn btn-success btn_sales "
+				id="submit_frm" onclick="return payment_submit(1);">Pay (F1)</button>
+		</div>
+		<div class="col-sm-6">
+			<button type="submit" class="btn btn-warning btn_sales"
+				id="submit_frm" onclick="return payment_submit(2);">Credit (F2)</button>
+		</div>
+	</div>
+	<div class="col-sm-12" style="margin-top: 10%;">
+		<div class="col-sm-6">
+			<button type="submit" class="btn btn-primary btn_sales"
+				id="submit_frm" onclick="return payment_submit(3);">Save (F2)</button>
+		</div>
+		<div class="col-sm-6">
+			<button type="submit" class="btn btn-default btn_sales"
+				id="submit_frm" onclick="return payment_submit(4);">Reset</button>
+		</div>
+		{% if data.id %} <input type="text" name="action" id="action"
+			style="display: none;" value="2"> {% else %} <input
+			type="text" name="action" id="action" style="display: none;"
+			value="1"> {% endif %}
+	</div>
+</div>
+
+
+
+
+<script>
+								
+								</script>

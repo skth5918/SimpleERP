@@ -1,0 +1,163 @@
+{% load rest_framework %}
+{% load common_function %}
+{% load static %}
+<div class="table-responsive">
+	<table class="table">
+		<thead>
+			<tr>
+				<th width="5%">S.No</th>
+				<th width="25%">Item Name</th>
+				<th width="10%">Qty</th>
+				<th width="15%">Serial No / <br> Batch No</th>
+				<th width="5%">Rate</th>
+				<th width="10%">Amount</th>
+				<th width="5%">Discount</th>
+				<th width="15%">Tax</th>
+				<th width="10%">Tax Amount</th>
+				<th width="10%">Net Amount</th>
+			</tr>
+		</thead>
+		<tbody>
+	
+		{% for lists_val in data %}
+			<tr>
+				<td>{{forloop.counter}}</td>
+				<td>
+				{% show_single_field tableName="ERP_item" show_field_name="name" pk=lists_val.item_id as list_dorp %} {{list_dorp}}-
+				{% show_single_field tableName="ERP_item" show_field_name="item_code" pk=lists_val.item_id as list_dorp %} {{list_dorp}}
+				
+				</td>
+				<td>
+				
+				
+				{{lists_val.qty}}</td>
+				<td><div style= "max-height:50px; overflow-y: scroll;"">
+			     {% show_serial_nos   id=lists_val.id type="2"  as serial_no_list %}  {{serial_no_list}}
+					{% for serial_no_list_val in serial_no_list %}
+				       {{serial_no_list_val.serial_no}}
+					{% endfor %}</div>
+				</td>
+				
+				<td>{{lists_val.rate}}</td>
+				<td>{{lists_val.bill_amount}}</td>
+				<td>{{lists_val.discount}}</td>
+				<td>{{lists_val.tax}}</td>
+				<td>{{lists_val.tax_amount}}</td>
+				<td>{{lists_val.net_amount}}</td>
+				<td>
+				
+				<a href="javascript:void(0)"
+					onclick="return  items_delete({{lists_val.id}});" ><i class="fa fa-trash"></i></a></td>
+				
+			</tr>
+
+			
+
+ {% endfor %}
+		</tbody>
+	</table>
+</div>
+<div class="col-md-12"><hr></div>
+								<div class="col-md-12">
+								<div class="col-md-8"></div>
+								<div class="col-md-4">
+								<table class="table">
+								<tr>
+								<th>Bill Amount</td>
+								<td>:</td>
+								<td>{{basic_data.bill_amount}}</td>
+								</tr>
+								<tr>
+								<th>Item Discount</th>
+								<td>:</td>
+								<td>{{basic_data.item_discount}}</td>
+								</tr>
+								<tr>
+								<th> Discount</th>
+								<td>:</td>
+								<td><input type="text"
+											class="form-control" id="invoice_discount" name="invoice_discount"
+											value="{{basic_data.discount}}" placeholder="Enter Discount Amount">
+											
+							
+								
+								
+								<input type="hidden"
+											class="form-control" id="total_bill_amount" name="total_bill_amount"
+											value="{{basic_data.bill_amount}}" placeholder="Enter Discount Amount">
+											
+								<input type="hidden"
+											class="form-control" id="total_item_discount" name="total_item_discount"
+											value="{{basic_data.item_discount}}" placeholder="Enter Discount Amount">
+											
+								<input type="hidden"
+											class="form-control" id="total_tax_amount" name="total_tax_amount"
+											value="{{basic_data.tax_amount}}" placeholder="Enter Discount Amount">
+											
+											
+								<input type="hidden"
+											class="form-control" id="total_net_amount" name="total_net_amount"
+											value="{{basic_data.net_amount}}" placeholder="Enter Discount Amount">
+											
+											
+													<input type="hidden"
+											class="form-control" id="new_tax_amount" name="new_tax_amount"
+											value="" placeholder="Enter Discount Amount">
+											
+											<input type="hidden"
+											class="form-control" id="new_net_amount" name="new_net_amount"
+											value="" placeholder="Enter Discount Amount">
+											
+											<input type="hidden"
+											class="form-control" id="berfore_tax" name="berfore_tax"
+											value="" placeholder="Enter Discount Amount">
+											
+											</td>
+														
+						
+																				
+								</tr>
+								<tr>
+								<th>Tax</th>
+								<td>:</td>
+								<td><div id="tax_div">{{basic_data.tax_amount}}</div></td>
+								</tr>
+								<tr>
+								<th>Net Total</th>
+								<td>:</td>
+								<th><div id="nettotal_div">{{basic_data.net_amount}}</div></th>
+								</tr>
+								</table>
+								</div>
+								</div>
+								
+								
+								
+								<script>
+								$("#invoice_discount").keyup(function(){
+									    
+									
+									invoice_discount=$("#invoice_discount").val();
+									if(invoice_discount>0)
+									{
+							 		item_discount=$("#total_item_discount").val();
+							 		bill_amount=$("#total_bill_amount").val();
+							 		tax_amount=$("#total_tax_amount").val();
+							 		net_amount=$("#total_net_amount").val();
+							 		before_tax=parseFloat(bill_amount)-parseFloat(item_discount);
+							 		$("#berfore_tax").val(berfore_tax);
+							 		$("#berfore_tax").val(berfore_tax);
+							 		
+							 		new_tax_reduce=(parseFloat(tax_amount)/parseFloat(before_tax))*invoice_discount;
+							 		new_net_amount=parseFloat(net_amount)-parseFloat(invoice_discount);
+							 		new_tax_amount=parseFloat(tax_amount)-parseFloat(new_tax_reduce);
+							 		
+							 		$("#tax_div").html(new_tax_amount);
+							 		
+							 		$("#nettotal_div").html(new_net_amount);
+							 		new_tax_amount=$("#new_tax_amount").val(new_tax_amount);
+									new_tax_amount=$("#new_net_amount").val(new_net_amount);
+									}
+									
+									});
+								</script>

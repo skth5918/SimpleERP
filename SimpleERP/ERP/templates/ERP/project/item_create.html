@@ -1,0 +1,162 @@
+{% load rest_framework %}
+{% load common_function %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "ERP/includes/header.html" %}
+    <body>
+        {% include "ERP/includes/left_menu.html" %}
+        <section class="content">
+           {% include "ERP/includes/top_menu.html" %}
+            <div class="wraper container-fluid">
+
+
+               <form  method="post" name="frm" id="frm">
+                 {% csrf_token %}
+                <div class="page-title">
+                    <div class="col-md-6 ">
+                        <h3 class="title"> {{ module }}</h3>
+                    </div>
+                    <div class="col-md-6 text-right">
+                     <a href="{% url 'ERP:project_item_list' %}">  <i class="fa fa-eye fa-2x text-inverse"></i> </a>
+                    </div>
+
+                  </div>
+
+                 <div class="row">
+
+                                {% if  error_data  or  success_data%}
+
+                                 <div class="col-md-12">
+                                    <div   {% if  error_data  %} class="alert alert-danger"  {% endif %} {% if  success_data  %} class="alert  alert-success"  {% endif %}>
+                                    {% if  error_data  %}
+                                        {{error_data.Error.message}}
+
+                                         {% for  error_details in error_data.Error.error_details %}
+                                                {{error_data..Error.error_details}}
+                                                </Br>
+                                                {{error_details.field}} -> {{error_details.message}}
+                                          {% endfor %}
+
+                                    {% endif %}
+                                    {% if  success_data %}
+                                        <strong>Well done!</strong> {{success_data}}.
+                                    {% endif %}
+                                    </div>
+                                </div>
+                               {% endif %}
+                   </div>
+                <div class="row">
+                        <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><h3 class="panel-title">{{ module }} </h3>
+ </div>
+                            <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="item_name">Project Name</label>
+                                        <input type="text" class="form-control" id="item_name" name="item_name" value="{{data.item_name}}" placeholder="Enter Item Name">
+                                    </div>
+                                    <div class="form-group">
+                                       {% drop_down_list tableName="ERP_project" show_field_name="project_name" store_field_name="id" as list_dorp %}
+
+
+                                        <label for="project">Category</label>
+                                        <select class="form-control" id="project" name="project">
+                                            <option value="">-- Select Category -- </option>
+                                            {% for list_dorp_val in list_dorp %}
+                                                <option value="{{ list_dorp_val.id }}"
+                                                {% if list_dorp_val.id == data.project_name %}
+                                                         selected="true"
+                                                        {% endif%}
+
+                                                > {{ list_dorp_val.text }} </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="project_type">Project Type</label>
+                                        <input type="text" class="form-control" id="project_type" name="project_type" value="{{data.project_type}}" placeholder="Enter Project Type">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="quantity">Quantity</label>
+                                        <input type="number" class="form-control" id="quantity" name="quantity" value="{{data.quantity}}" placeholder="Enter Quantity">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="rate">Rate</label>
+                                        <input type="number" class="form-control" id="rate" name="rate" value="{{data.rate}}" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="amount">Amount</label>
+                                        <input type="number" class="form-control" id="amount" name="amount" value="{{data.amount}}" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="created_by">Created by</label>
+                                        <input type="text" class="form-control" id="created_by" name="created_by" placeholder="Enter Name of the creator" value="{{data.created_by}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="created_date">Created Date</label>
+                                        <input type="date" class="form-control" id="created_date" name="created_date" placeholder="Enter date of creation" value="{{data.created_date}}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="modified_by">Modified by</label>
+                                        <input type="text" class="form-control" id="modified_by" name="modified_by" placeholder="Enter Name of the modifier" value="{{data.modified_by}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="modified_date">Modified date</label>
+                                        <input type="date" class="form-control" id="modified_date" name="modified_date" placeholder="Enter date of modification" value="{{data.modified_date}}">
+                                    </div>
+                        </div>
+
+                    </div>
+
+
+ </div>
+
+
+
+
+                <div class="row">
+
+                    <!-- Basic example -->
+                    <div class="col-md-12 text-right"  {% if view_mode %} style="display:none" {% endif%}>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                    <button type="submit" class="btn btn-success submit_btn" id="submit_frm" >Submit</button>
+                                    <button type="reset" class="btn btn-default reset_btn">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                 </form>
+
+
+            </div>
+            {% include "ERP/includes/footer.html" %}
+        </section>
+
+ {% include "ERP/includes/js_script.html" %}
+    </body>
+</html>
+<script>
+$(document).ready(function() {
+    $("#submit_frm").click(function(){
+        FrmValidation();
+        //alert("RE:");
+    });
+
+});
+function FrmValidation(){
+    $("#frm").validate({
+        rules : {
+            item_name : {
+                required : true,
+            },
+            amount : {
+                required : true,
+            },
+
+        }
+    });
+}
+ </script>
